@@ -101,6 +101,9 @@ nmap <leader>gs :G<cr>
 nmap <leader>jf :%!python -m json.tool indent=2<CR>
 nmap <leader>jq :%!jq -S .<CR>
 
+"Upper case the previous word in insert mode
+imap <c-u> <esc>vbUwi
+
 set t_md=
 
 filetype indent plugin on
