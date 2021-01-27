@@ -9,7 +9,8 @@ export ZSH=$HOME/.local/oh-my-zsh
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 # ZSH_THEME="robbyrussell"
-ZSH_THEME="half-life"
+# ZSH_THEME="half-life"
+ZSH_THEME="dstufft"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -81,11 +82,11 @@ source $ZSH/oh-my-zsh.sh
 # export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
-else
-  export EDITOR='mvim'
-fi
+#if [[ -n $SSH_CONNECTION ]]; then
+#  export EDITOR='vim'
+#else
+#  export EDITOR='mvim'
+#fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -103,22 +104,16 @@ fi
 path+=('/opt/local/bin' '/opt/local/sbin/')
 export PATH
 
-# From my bash profile.
-export HOMEBREW_GITHUB_API_TOKEN="api-key"
-export PYTHONPATH=/usr/local/lib/python2.7/site-packages/
-
 alias df='df-h'
 alias du='du -h'
 alias fuck='sudo $(history -p \!\!)'
 alias audiokill="sudo kill -9 `ps ax|grep 'coreaudio[a-z]' | awk '{print $1}'`"
 alias via='vim -- "$(ls -t | head -n 1)"'
 
-function smack_tunnelblick
-{
-  sudo pkill -9 -f "Tunnelblick.*openvpn" && sudo pkill -9 tunnelblickd Tunnelblick
-}
-
 # Turn off all beeps
 unsetopt BEEP
 # Turn off autocomplete beeps
 unsetopt LIST_BEEP
+
+# I want vim to be my editor everywhere
+export EDITOR='vim'
