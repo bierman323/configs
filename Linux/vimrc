@@ -29,20 +29,10 @@ let g:NERDTreeDirArrows=0
 let g:NERDTreeNodeDelimiter = "\u00a0"  "Gets rid of ^G at the start of every line
 :nmap <c-e> :NERDTreeToggle<CR>
 
-" Tab movement
-
-nnoremap th  :tabfirst<CR>
-nnoremap tj  :tabnext<CR>
-nnoremap tk  :tabprev<CR>
-nnoremap tl  :tablast<CR>
-
-nnoremap tn  :tabnext<Space>
-nnoremap tm  :tabm<Space>
-nnoremap td  :tabclose<CR>
-" Alternatively use
-"nnoremap th :tabnext<CR>
-"nnoremap tl :tabprev<CR>
-"nnoremap tn :tabnew<CR>
+" Get airline to show buffers
+let g:airline#extensions#tabline#enabled = 1
+" Just show the filename
+let g:airline#extensions#tabline#fnamemod = ':t'
 
 " ==== moving around
 nmap <silent> <A-Up> :wincmd k<CR>
@@ -68,14 +58,21 @@ set showcmd
 autocmd FileType python set tabstop=2|set shiftwidth=2|set expandtab|set backspace=2|set softtabstop=2
 autocmd BufWritePre * :%s/\s\+$//e
 
+" Change splits to right and below as default
+set splitright
+set splitbelow
+
 " Visual block will take base64 code and replace it with decoded text
 vnoremap <leader>b y:tabe\|pu!=system('base64 -d', @@)<cr>
 
 "Open up the vimrc in a vertical split
-nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+nnoremap <leader>ev :vs $MYVIMRC<cr>
 
-"Open up a terminal 50 characters wide
-nnoremap <leader>t :vert term ++cols=50<cr>
+"Open terminal below and 15 rows long
+nnoremap <leader>t :term ++rows=15<cr>
+
+" Open up a blanck vertical split
+nnoremap <leader>v :vs ene<cr>
 
 " Search and replace. With an 'rc' it will do a confirmation before changing
 " First you have to hit the *
@@ -105,5 +102,7 @@ nmap <leader>jq :%!jq -S .<CR>
 imap <c-u> <esc>vbUwi
 
 set t_md=
+set noerrorbells
+set novisualbell
 
 filetype indent plugin on
