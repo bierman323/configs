@@ -20,8 +20,6 @@ function title {
       echo -ne "\033]0;"$*"\007"
 }
 
-export HOMEBREW_GITHUB_API_TOKEN=api-key
-
 
 echo
 fortune
