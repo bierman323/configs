@@ -104,7 +104,6 @@ path+=('/opt/local/bin' '/opt/local/sbin/')
 export PATH
 
 # From my bash profile.
-export HOMEBREW_GITHUB_API_TOKEN="api-key"
 export PYTHONPATH=/usr/local/lib/python2.7/site-packages/
 
 alias df='df-h'
