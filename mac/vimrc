@@ -68,8 +68,11 @@ vnoremap <leader>b y:tabe\|pu!=system('base64 -d', @@)<cr>
 "Open up the vimrc in a vertical split
 nnoremap <leader>ev :vs $MYVIMRC<cr>
 
+" Set the default size of terminal
+set termwinsize=15x0
+
 "Open terminal below and 15 rows long
-nnoremap <leader>t :term ++rows=15<cr>
+nnoremap <leader>t :botright term<cr>
 
 " Open up a blanck vertical split
 nnoremap <leader>v :vs ene<cr>
