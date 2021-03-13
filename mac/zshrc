@@ -81,11 +81,11 @@ source $ZSH/oh-my-zsh.sh
 # export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
-else
-  export EDITOR='mvim'
-fi
+#if [[ -n $SSH_CONNECTION ]]; then
+#  export EDITOR='vim'
+#else
+#  export EDITOR='mvim'
+#fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -103,9 +103,6 @@ fi
 path+=('/opt/local/bin' '/opt/local/sbin/')
 export PATH
 
-# From my bash profile.
-export PYTHONPATH=/usr/local/lib/python2.7/site-packages/
-
 alias df='df-h'
 alias du='du -h'
 alias fuck='sudo $(history -p \!\!)'
@@ -116,3 +113,6 @@ function smack_tunnelblick
 {
   sudo pkill -9 -f "Tunnelblick.*openvpn" && sudo pkill -9 tunnelblickd Tunnelblick
 }
+
+# I want vim to be my ediotr everywhere
+export EDITOR='vim'
