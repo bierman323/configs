@@ -101,7 +101,7 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 #
 # Setup PATH the right way
-path+=('/opt/local/bin' '/opt/local/sbin/')
+path+=('/opt/local/bin' '/opt/local/sbin/' '/usr/local/go/bin')
 export PATH
 
 alias df='df-h'
