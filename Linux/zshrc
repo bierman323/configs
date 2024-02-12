@@ -110,6 +110,7 @@ alias fuck='sudo $(history -p \!\!)'
 alias audiokill="sudo kill -9 `ps ax|grep 'coreaudio[a-z]' | awk '{print $1}'`"
 alias via='vim -- "$(ls -t | head -n 1)"'
 alias bat='batcat'
+alias sudovim='sudo -E vim'
 
 # Turn off all beeps
 unsetopt BEEP
