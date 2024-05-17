@@ -25,11 +25,18 @@ path+=('/opt/local/bin' '/opt/local/sbin/' '/Applications/Visual Studio Code.app
 export PATH
 
 export HISTTIMEFORMAT="%d/%m/%y %T "
+HISTSIZE=5000
+HISTFILE=$HOME/.zsh_history
+SAVEHIST=$HISTSIZE
+setopt appendhistory
+setopt sharehistory
+setopt hist_ignore_space
 
 alias df='duf'
 alias du='ncdu'
 alias audiokill="sudo kill -9 `ps ax|grep 'coreaudio[a-z]' | awk '{print $1}'`"
-alias via='vim -- "$(ls -t | head -n 1)"'
+alias via='nvim -- "$(ls -t | head -n 1)"'
+alias sudovim='sudo -E nvim'
 alias cat="bat"
 alias ls="eza --icons"
 alias ll="eza -alho --icons --no-permissions --git-repos-no-status"
