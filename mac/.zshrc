@@ -33,7 +33,7 @@ setopt sharehistory
 setopt hist_ignore_space
 
 alias df='duf'
-alias du='ncdu'
+alias du='ncdu --color dark'
 alias audiokill="sudo kill -9 `ps ax|grep 'coreaudio[a-z]' | awk '{print $1}'`"
 alias via='nvim "$(eza -fr -smod | head -n 1)"'
 alias sudovim='sudo -E nvim'
