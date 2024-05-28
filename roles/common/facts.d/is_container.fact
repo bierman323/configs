@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ -f /.dockerenv ] || grep -q -i docker /proc/1/cgroup; then
+    echo '{"is_container": true}'
+else
+    echo '{"is_container": false}'
+fi
+
