@@ -1,22 +1,5 @@
 - hosts: localhost
   become: true
-  pre_tasks:
-    - name: Check if this is run in a container
-      shell: ./roles/common/facts.d/is_container.fact
-      register: is_container
-
   roles:
-    - role: common
-    - role: development
-
-  tasks:
-    - name: Apply container-specific configuration
-      when: ansible_local.is_container
-      include_role:
-        name: container
-
-    - name: Apply non-container configuration
-      when: not ansible_local.is_container
-      include_role:
-        name: non_container
+    - role: dotfiles
 

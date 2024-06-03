@@ -1,0 +1,28 @@
+- name: install some tools that I use. For Ubuntu or Kali only
+  tasks:
+    - block:
+      - name: Install some packages for Ubuntu or Kali
+        ansible.builtin.package:
+          name: "{{ item }}"
+          state: present
+        loop:
+          - zsh
+          - tmux
+          - git
+          - npm
+          - neovim
+          - build-essentials
+          - curl
+          - file
+          - python3
+
+      - name: Check if brew is already installed
+        ansible.builtin.command: "which brew"
+        register: brew_path
+
+      - name: Install brew
+        ansible.builtin.shell: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        when: brew_path | length > 0
+        
+      when: >
+        ansible_facts["distribution"] == "Ubuntu" or ansible_facts[ "distribution" ] == "Kali"

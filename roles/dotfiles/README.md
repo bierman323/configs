@@ -40,6 +40,29 @@ Dependencies
 - tpm
 - oh-my-zsh
 
+## Ubuntu
+---------
+### apt
+-------
+- zsh
+- tmux
+- git
+- npm
+- neovim
+### scripted
+- fzf
+- bat
+- btop
+- duf
+- eza
+- fd
+- ripgrep
+- jq
+- yq
+- zoxide
+- tpm
+- oh-my-zsh
+
 Example Playbook
 ----------------
 
