@@ -50,7 +50,7 @@ alias ass='alias | fzf'
 # preview
 alias fzfp="fzf-tmux --preview 'bat --style=numbers --color=always --line-range :500 {}'"
 
-alias fnp='nvim $(fzf -m --preview="bat --style=numbers --color=always --line-range :500 {}")'
+alias fnp='nvim -O $(fzf -m --preview="bat --style=numbers --color=always --line-range :500 {}")'
 
 # get rid of the beeps
 unsetopt BEEP
