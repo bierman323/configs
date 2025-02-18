@@ -17,5 +17,7 @@ fi
 OH_MY_PATH="$HOME/.local/oh-my-zsh"
 # Path to your oh-my-zsh installation.
 export ZSH=$OH_MY_PATH
+
+plugins=(git)
 # run it at startup
 source $ZSH/oh-my-zsh.sh
