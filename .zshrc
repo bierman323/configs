@@ -1,4 +1,4 @@
-# Check if this is interactive or some kind of script. Only configure it if it is interactive login. 
+# Check if this is interactive or some kind of script. Only configure it if it is interactive login.
 
 # Check what OS is running
 export OS_VERSION=$(uname)
@@ -7,6 +7,16 @@ export OS_VERSION=$(uname)
 OH_MY_PATH="$HOME/.local/oh-my-zsh"
 if [ -d "$OH_MY_PATH" ]; then
   source .zshrc_ohmyzsh
+fi
+
+# Check if brew is installed. This needs to be above places where
+# you are checking for applications that are installed with brew
+if [[ -d "/opt/homebrew/bin/brew" ]]; then
+  path+=('/opt/homebrew/bin/brew')
+  export path
+elif [[ -d "/home/linuxbrew/.linuxbrew/Homebrew/bin" ]]; then
+  path+=('/home/linuxbrew/.linuxbrew/Homebrew/bin')
+  export path
 fi
 
 # Configure eza
@@ -61,8 +71,8 @@ if (( $+commands[thefuck] )); then
   eval $(thefuck --alias)
 fi
 
-# Create some Mac specific 
-if (( $OS_VERSION=="Darwin")); then
+# Create some Mac specific
+if [[ "$OS_VERSION" == "Darwin" ]]; then
   alias audiokill="sudo kill -9 `ps ax|grep 'coreaudio[a-z]' | awk '{print $1}'`"
   alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
   path+=('/Applications/Visual Studio Code.app/Contents/Resources/app/bin/')
