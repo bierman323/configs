@@ -23,4 +23,4 @@ vim.keymap.set('n','<leader><space>',':let @/=""<CR>', { noremap=true, silent=tr
 vim.keymap.set('n','<leader>jf',':%!python -m json.tool indent=2<CR>', { noremap=true, silent=true })
 vim.keymap.set('n','<leader>jq',':%!jq -S .<CR>', { noremap=true, silent=true })
 -- Uppercase the previous word
-vim.keymap.set('i','<c-u>','<esc>vbUwi', { noremap=true, silent=true })
+vim.keymap.set('i','<c-u>','<esc>gUiw', { noremap=true, silent=true })

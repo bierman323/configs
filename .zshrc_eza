@@ -1,0 +1,9 @@
+
+alias ls="eza --icons"
+alias ll="eza -alho --icons --no-permissions --git-repos-no-status"
+alias lsd="eza --icons -Dlh --git-repos"
+alias lsf="eza --icons -flh --git"
+alias tree="eza --icons --tree"
+
+# change some configs for eza so that I can see things
+export EZA_COLORS="da=38;5;217:uu=38;5;104"
