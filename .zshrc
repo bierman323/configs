@@ -19,6 +19,12 @@ elif [[ -d "/home/linuxbrew/.linuxbrew/Homebrew/bin" ]]; then
   export path
 fi
 
+# Check if there is a bin directory in the home directory
+if [[ -d "$HOME/bin" ]]; then
+  path+=("$HOME/bin")
+  export path
+fi
+
 # Configure eza
 if (( $+commands[eza] )); then
   source .zshrc_eza
