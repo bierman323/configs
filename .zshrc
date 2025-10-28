@@ -33,6 +33,8 @@ fi
 # Configure bat
 if (( $+commands[bat] )); then
   alias cat="bat"
+elif (( $+commands[batcat] )); then
+  alias cat="batcat"
 fi
 
 # Configure fzf
@@ -43,8 +45,13 @@ if (( $+commands[fzf] )); then
   # preview
   alias fzfp="fzf-tmux --preview 'bat --style=numbers --color=always --line-range :500 {}'"
 
-  # setup fzf and it's shortcuts
-  eval "$(fzf --zsh)"
+  # check if fzf is the newer version that accepts the shell information for shortcuts
+  if fzf --help 2>&1 | grep -q -- '--zsh'; then
+    eval "$(fzf --zsh)"
+  else
+    source /usr/share/doc/fzf/examples/key-bindings.zsh
+    source /usr/share/doc/fzf/examples/completion.zsh
+  fi
   export FZF_DEFAULT_OPTS_FILE=$HOME/.fzfrc
 fi
 
