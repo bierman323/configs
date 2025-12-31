@@ -1,1 +1,10 @@
 *.swp
+
+# Sensitive information - DO NOT COMMIT
+.zshrc_sensitive
+.zshrc_work_sensitive
+.bash_sensitive
+.env_local
+*_sensitive
+*.local
+.secrets

@@ -3,6 +3,42 @@
 # Check what OS is running
 export OS_VERSION=$(uname)
 
+# Detect environment type
+export IS_WORK_MAC=false
+export IS_DOCKER=false
+export IS_WSL=false
+
+# Check for work Mac (GlobalProtect installed)
+if [[ "$OS_VERSION" == "Darwin" ]] && [[ -d "/Applications/GlobalProtect.app" ]]; then
+  export IS_WORK_MAC=true
+fi
+
+# Check for Docker container
+if [[ -f "/.dockerenv" ]]; then
+  export IS_DOCKER=true
+fi
+
+# Check for WSL2
+if [[ "$OS_VERSION" == "Linux" ]] && grep -qEi "(Microsoft|WSL)" /proc/version 2>/dev/null; then
+  export IS_WSL=true
+fi
+
+# Load work-specific configuration if on work Mac
+if [[ "$IS_WORK_MAC" == "true" ]] && [[ -f "$HOME/.config/dotfiles/.zshrc_work" ]]; then
+  source "$HOME/.config/dotfiles/.zshrc_work"
+fi
+
+# Load sensitive environment variables (not tracked in git)
+# These should be stored in your private dotfiles repo
+if [[ -f "$HOME/.config/dotfiles/.zshrc_sensitive" ]]; then
+  source "$HOME/.config/dotfiles/.zshrc_sensitive"
+fi
+
+# Load work-specific sensitive variables if on work Mac
+if [[ "$IS_WORK_MAC" == "true" ]] && [[ -f "$HOME/.config/dotfiles/.zshrc_work_sensitive" ]]; then
+  source "$HOME/.config/dotfiles/.zshrc_work_sensitive"
+fi
+
 # Configure OhMyZSH first
 OH_MY_PATH="$HOME/.local/oh-my-zsh"
 if [ -d "$OH_MY_PATH" ]; then

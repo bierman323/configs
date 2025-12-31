@@ -1,5 +1,8 @@
 export PATH=/Users/bbierman/bin:/usr/local/sbin:/usr/local/bin:/opt/local/bin:/opt/local/sbin:/usr/bin:$PATH
-export HOMEBREW_GITHUB_API_TOKEN="api-key"
+
+# Sensitive tokens and API keys moved to .bash_sensitive (not tracked in git)
+[ -f "$HOME/.config/dotfiles/.bash_sensitive" ] && source "$HOME/.config/dotfiles/.bash_sensitive"
+
 # export PYTHONPATH=/usr/local/lib/python2.7/site-packages/
 #. /Library/Python/2.7/site-packages/powerline/bindings/bash/powerline.sh
 alias df='df -h'
