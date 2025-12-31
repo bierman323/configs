@@ -24,25 +24,25 @@ if [[ "$OS_VERSION" == "Linux" ]] && grep -qEi "(Microsoft|WSL)" /proc/version 2
 fi
 
 # Load work-specific configuration if on work Mac
-if [[ "$IS_WORK_MAC" == "true" ]] && [[ -f "$HOME/.config/dotfiles/.zshrc_work" ]]; then
-  source "$HOME/.config/dotfiles/.zshrc_work"
+if [[ "$IS_WORK_MAC" == "true" ]] && [[ -f "$HOME/.zshrc_work" ]]; then
+  source "$HOME/.zshrc_work"
 fi
 
 # Load sensitive environment variables (not tracked in git)
 # These should be stored in your private dotfiles repo
-if [[ -f "$HOME/.config/dotfiles/.zshrc_sensitive" ]]; then
-  source "$HOME/.config/dotfiles/.zshrc_sensitive"
+if [[ -f "$HOME/.zshrc_sensitive" ]]; then
+  source "$HOME/.zshrc_sensitive"
 fi
 
 # Load work-specific sensitive variables if on work Mac
-if [[ "$IS_WORK_MAC" == "true" ]] && [[ -f "$HOME/.config/dotfiles/.zshrc_work_sensitive" ]]; then
-  source "$HOME/.config/dotfiles/.zshrc_work_sensitive"
+if [[ "$IS_WORK_MAC" == "true" ]] && [[ -f "$HOME/.zshrc_work_sensitive" ]]; then
+  source "$HOME/.zshrc_work_sensitive"
 fi
 
 # Configure OhMyZSH first
 OH_MY_PATH="$HOME/.local/oh-my-zsh"
 if [ -d "$OH_MY_PATH" ]; then
-  source .zshrc_ohmyzsh
+  source "$HOME/.zshrc_ohmyzsh"
 fi
 
 # Check if brew is installed. This needs to be above places where
@@ -63,7 +63,7 @@ fi
 
 # Configure eza
 if (( $+commands[eza] )); then
-  source .zshrc_eza
+  source "$HOME/.zshrc_eza"
 fi
 
 # Configure bat
