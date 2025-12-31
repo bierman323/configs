@@ -1,0 +1,20 @@
+# Work-specific zsh configuration
+# This file is sourced when on work Mac (GlobalProtect detected)
+
+# Example: Skip certain tools that aren't available on work Mac
+# Uncomment and customize as needed
+
+# Example: Work-specific aliases
+# alias vpn='sudo /Applications/GlobalProtect.app/Contents/MacOS/GlobalProtect'
+
+# Example: Work-specific PATH additions
+# path+=('/work/specific/path')
+# export path
+
+# Example: Work-specific environment variables
+# export WORK_PROXY="http://proxy.company.com:8080"
+# export HTTP_PROXY="$WORK_PROXY"
+# export HTTPS_PROXY="$WORK_PROXY"
+
+# Example: Disable certain plugins or tools on work Mac
+# Skip loading certain plugins that might be restricted
