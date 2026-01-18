@@ -18,10 +18,18 @@ else
   fi
 fi
 
-OH_MY_PATH="$HOME/.local/oh-my-zsh"
+if [[ -d "$HOME/.local/oh-my-zsh" ]]; then
+  OH_MY_PATH="$HOME/.local/oh-my-zsh"
+elif [[ -d "$HOME/.oh-my-zsh" ]]; then
+  OH_MY_PATH="$HOME/.oh-my-zsh"
+fi
+
 # Path to your oh-my-zsh installation.
 export ZSH=$OH_MY_PATH
 
-plugins=(git)
+# Keep the Oh My update annoyance from happening and just do it
+export DISABLE_UPDATE_PROMPT=true
+
+plugins=(vi-mode git)
 # run it at startup
 source $ZSH/oh-my-zsh.sh

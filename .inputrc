@@ -1,0 +1,23 @@
+# Disable terminal bell
+set bell-style none
+
+# Enable case-insensitive tab completion
+set completion-ignore-case on
+
+# Show all completions on first tab if ambiguous
+set show-all-if-ambiguous on
+
+# Color files by type in completion lists
+set colored-stats on
+
+# Append file type indicator to completions
+set visible-stats on
+
+# Mark symlinks with @ in completion
+set mark-symlinked-directories on
+
+# Color the common prefix in completions
+set colored-completion-prefix on
+
+# Skip completed text when pasting
+set skip-completed-text on

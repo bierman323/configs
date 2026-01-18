@@ -1,35 +1,7 @@
-export PATH=/Users/bbierman/bin:/usr/local/sbin:/usr/local/bin:/opt/local/bin:/opt/local/sbin:/usr/bin:$PATH
+# .bash_profile - sourced for login shells
+# This sources .bashrc which loads oh-my-bash and custom configuration
 
-# Sensitive tokens and API keys moved to .bash_sensitive (not tracked in git)
-[ -f "$HOME/.config/dotfiles/.bash_sensitive" ] && source "$HOME/.config/dotfiles/.bash_sensitive"
-
-# export PYTHONPATH=/usr/local/lib/python2.7/site-packages/
-#. /Library/Python/2.7/site-packages/powerline/bindings/bash/powerline.sh
-alias df='df -h'
-alias free='free -g'
-alias du='du -h'
-alias ll='ls -lh'
-alias la='ls -alh'
-alias updatedb='sudo /usr/libexec/locate.updatedb'
-alias fuck='sudo $(history -p \!\!)'
-
-function bliff(){
-  pushd /Users/bbierman/bin/TekDefense-Automater
-  ./Automater.py -r -w output.html "$1"
-  popd
-}
-
-function title {
-      echo -ne "\033]0;"$*"\007"
-}
-
-
-echo
-fortune
-
-test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
-
-# Setting PATH for Python 3.8
-# The original version is saved in .bash_profile.pysave
-PATH="/Library/Frameworks/Python.framework/Versions/3.8/bin:${PATH}"
-export PATH
+# Source .bashrc if it exists (loads oh-my-bash + custom config)
+if [[ -f "$HOME/.bashrc" ]]; then
+  source "$HOME/.bashrc"
+fi
