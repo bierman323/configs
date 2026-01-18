@@ -39,9 +39,15 @@ if [[ "$IS_WORK_MAC" == "true" ]] && [[ -f "$HOME/.zshrc_work_sensitive" ]]; the
   source "$HOME/.zshrc_work_sensitive"
 fi
 
-# Configure OhMyZSH first
+# Load work-specific environment variables (passwords, credentials - not tracked in git)
+if [[ "$IS_WORK_MAC" == "true" ]] && [[ -f "$HOME/.zshenv_work_sensitive" ]]; then
+  source "$HOME/.zshenv_work_sensitive"
+fi
+
+# Configure OhMyZSH first - check both standard and alternate locations
 OH_MY_PATH="$HOME/.local/oh-my-zsh"
-if [ -d "$OH_MY_PATH" ]; then
+OH_MY_PATH_ALT="$HOME/.oh-my-zsh"
+if [[ -d "$OH_MY_PATH" || -d "$OH_MY_PATH_ALT" ]]; then
   source "$HOME/.zshrc_ohmyzsh"
 fi
 
@@ -64,6 +70,11 @@ fi
 # Configure eza
 if (( $+commands[eza] )); then
   source "$HOME/.zshrc_eza"
+fi
+
+# Configure claude
+if [[ -f "$HOME/.local/bin/claude" ]]; then
+  source "$HOME/.zshrc_claude"
 fi
 
 # Configure bat
@@ -120,12 +131,26 @@ if (( $+commands[thefuck] )); then
   eval $(thefuck --alias)
 fi
 
-# Create some Mac specific
+# Configure yazi file manager
+if (( $+commands[yazi] )); then
+  function y() {
+    local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+    yazi "$@" --cwd-file="$tmp"
+    IFS= read -r -d '' cwd < "$tmp"
+    [ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
+    rm -f -- "$tmp"
+  }
+fi
+
+# Create some Mac specific aliases and paths
 if [[ "$OS_VERSION" == "Darwin" ]]; then
   alias audiokill="sudo kill -9 `ps ax|grep 'coreaudio[a-z]' | awk '{print $1}'`"
   alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
   path+=('/Applications/Visual Studio Code.app/Contents/Resources/app/bin/')
 fi
+
+# Some basic aliases
+alias cpr='cp -R'
 
 export HISTTIMEFORMAT="%d/%m/%y %T "
 HISTSIZE=5000
@@ -142,7 +167,33 @@ unsetopt LIST_BEEP
 # Generated for envman. Do not edit.
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
 
-
-## Need to fix this for different OS's and functionality. Split it into multiple files per OS/Function
+# Base path additions
 path+=('/opt/local/bin' '/opt/local/sbin/' "$HOME/.local/bin/")
+
+# Work Mac specific configuration
+if [[ "$IS_WORK_MAC" == "true" ]]; then
+  path+=('/Users/brad.bierman/Library/Python/3.12/bin')
+
+  # Work-specific functions
+  function smack_tunnelblick() {
+    sudo pkill -9 -f "Tunnelblick.*openvpn" && sudo pkill -9 tunnelblickd Tunnelblick
+  }
+
+  function kill_gp() {
+    launchctl unload /Library/LaunchAgents/com.paloaltonetworks.gp.pangp*
+  }
+
+  function start_gp() {
+    launchctl load /Library/LaunchAgents/com.paloaltonetworks.gp.pangp*
+  }
+
+  # Allow multithreading - hack for Mac updates
+  export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+
+  # Load asdf version manager if installed
+  if [[ -f "$HOME/.asdf/asdf.sh" ]]; then
+    source "$HOME/.asdf/asdf.sh"
+  fi
+fi
+
 export PATH

@@ -1,0 +1,183 @@
+# Check what OS is running
+export OS_VERSION=$(uname)
+
+# Detect environment type
+export IS_WORK_MAC=false
+export IS_DOCKER=false
+export IS_WSL=false
+
+# Check for work Mac (GlobalProtect installed)
+if [[ "$OS_VERSION" == "Darwin" ]] && [[ -d "/Applications/GlobalProtect.app" ]]; then
+  export IS_WORK_MAC=true
+fi
+
+# Check for Docker container
+if [[ -f "/.dockerenv" ]]; then
+  export IS_DOCKER=true
+fi
+
+# Check for WSL2
+if [[ "$OS_VERSION" == "Linux" ]] && grep -qEi "(Microsoft|WSL)" /proc/version 2>/dev/null; then
+  export IS_WSL=true
+fi
+
+# Load sensitive environment variables (not tracked in git)
+if [[ -f "$HOME/.bash_sensitive" ]]; then
+  source "$HOME/.bash_sensitive"
+fi
+
+# Load work-specific sensitive variables if on work Mac
+if [[ "$IS_WORK_MAC" == "true" ]] && [[ -f "$HOME/.bash_work_sensitive" ]]; then
+  source "$HOME/.bash_work_sensitive"
+fi
+
+# Helper function to check if command exists (replaces zsh's $+commands)
+command_exists() {
+  command -v "$1" &>/dev/null
+}
+
+# Check if brew is installed
+if [[ -d "/opt/homebrew/bin" ]]; then
+  PATH="$PATH:/opt/homebrew/bin"
+elif [[ -d "/home/linuxbrew/.linuxbrew/Homebrew/bin" ]]; then
+  PATH="$PATH:/home/linuxbrew/.linuxbrew/Homebrew/bin"
+fi
+
+# Check if there is a bin directory in the home directory
+if [[ -d "$HOME/bin" ]]; then
+  PATH="$PATH:$HOME/bin"
+fi
+
+# Configure eza
+if command_exists eza; then
+  source "$HOME/.bashrc_eza"
+fi
+
+# Configure claude
+if [[ -f "$HOME/.local/bin/claude" ]]; then
+  source "$HOME/.bashrc_claude"
+fi
+
+# Configure bat
+if command_exists bat; then
+  alias cat="bat"
+elif command_exists batcat; then
+  alias cat="batcat"
+fi
+
+# Configure fzf
+if command_exists fzf; then
+  # Alias Search System
+  alias ass='alias | fzf'
+
+  # preview
+  alias fzfp="fzf-tmux --preview 'bat --style=numbers --color=always --line-range :500 {}'"
+
+  # check if fzf is the newer version that accepts the shell information for shortcuts
+  if fzf --help 2>&1 | grep -q -- '--bash'; then
+    eval "$(fzf --bash)"
+  elif [[ -f /usr/share/doc/fzf/examples/key-bindings.bash ]]; then
+    source /usr/share/doc/fzf/examples/key-bindings.bash
+    source /usr/share/doc/fzf/examples/completion.bash
+  fi
+  export FZF_DEFAULT_OPTS_FILE=$HOME/.fzfrc
+fi
+
+# Choose the default editor
+if command_exists nvim; then
+  export EDITOR='nvim'
+  alias sudovim='sudo -E nvim'
+else
+  export EDITOR='vim'
+  alias sudovim='sudo -E vim'
+fi
+
+# Configure duf
+if command_exists duf; then
+  alias df='duf'
+fi
+
+# Configure ncdu
+if command_exists ncdu; then
+  alias du='ncdu --color dark'
+fi
+
+# Configure zoxide
+if command_exists zoxide; then
+  eval "$(zoxide init --cmd cd bash)"
+fi
+
+# Configure thefuck
+if command_exists thefuck; then
+  eval "$(thefuck --alias)"
+fi
+
+# configs for yazi
+if command_exists yazi; then
+  function y() {
+    local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+    yazi "$@" --cwd-file="$tmp"
+    IFS= read -r cwd < "$tmp"
+    [ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
+    rm -f -- "$tmp"
+  }
+fi
+
+# Create some Mac specific aliases
+if [[ "$OS_VERSION" == "Darwin" ]]; then
+  alias audiokill="sudo kill -9 \$(ps ax | grep 'coreaudio[a-z]' | awk '{print \$1}')"
+  alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
+  PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin/"
+fi
+
+# Some basic aliases
+alias cpr='cp -R'
+
+# History configuration
+export HISTTIMEFORMAT="%d/%m/%y %T "
+HISTSIZE=5000
+HISTFILE=$HOME/.bash_history
+HISTFILESIZE=$HISTSIZE
+HISTCONTROL=ignorespace:ignoredups
+shopt -s histappend
+
+# Add paths
+PATH="$PATH:/opt/local/bin:/opt/local/sbin:$HOME/.local/bin"
+
+# Work Mac specific configuration
+if [[ "$IS_WORK_MAC" == "true" ]]; then
+  PATH="$HOME/Library/Python/3.12/bin:$PATH"
+
+  # some basic functions
+  function smack_tunnelblick() {
+    sudo pkill -9 -f "Tunnelblick.*openvpn" && sudo pkill -9 tunnelblickd Tunnelblick
+  }
+
+  function kill_gp() {
+    launchctl unload /Library/LaunchAgents/com.paloaltonetworks.gp.pangp*
+  }
+
+  function start_gp() {
+    launchctl load /Library/LaunchAgents/com.paloaltonetworks.gp.pangp*
+  }
+
+  # allow multithreading. Hack for Mac updates
+  export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+
+  # asdf version manager
+  if [[ -f "$HOME/.asdf/asdf.sh" ]]; then
+    . "$HOME/.asdf/asdf.sh"
+    # bash completions for asdf
+    if [[ -f "$HOME/.asdf/completions/asdf.bash" ]]; then
+      . "$HOME/.asdf/completions/asdf.bash"
+    fi
+  fi
+fi
+
+export PATH
+
+# Generated for envman. Do not edit.
+[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
+
+# iTerm2 shell integration
+test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
