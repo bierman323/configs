@@ -5,7 +5,7 @@ case $- in
 esac
 
 # Path to your oh-my-bash installation.
-export OSH='/Users/brad.bierman/.oh-my-bash'
+export OSH="$HOME/.oh-my-bash"
 
 # Set theme - powerbash10k is the bash equivalent of powerlevel10k
 # Fallback to half-life if needed (matching zsh config)
