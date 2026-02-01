@@ -5,3 +5,7 @@ export AWS_CA_BUNDLE="${CORP_CA_BUNDLE}" # boto3
 export CURL_CA_BUNDLE="${CORP_CA_BUNDLE}" # curl
 export HTTPLIB2_CA_CERTS="${CORP_CA_BUNDLE}" # httplib2
 export NODE_EXTRA_CA_CERTS="${CORP_CA_BUNDLE}" # nodejs
+
+# Aliases
+alias cldt=cldt.sh
+alias cldr="claude --continue"
