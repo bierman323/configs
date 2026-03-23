@@ -1,6 +1,11 @@
-description: Detection Efficacy claude session
+description: "Detection Efficacy claude session"
 session: detection
+directory: "~/code/detection-efficacy"
 windows:
-- name: detection
-  panes: []
-  layout: tiled
+  - name: detection
+    panes:
+      - title: claude
+        command: "claude --resume || claude"
+      - title: shell
+        split: v
+        percent: 30

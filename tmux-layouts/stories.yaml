@@ -1,6 +1,11 @@
-description: Analytic Stories claude
+description: "Analytic Stories claude session"
 session: stories
+directory: "~/code/analytic-stories"
 windows:
-- name: stories
-  panes: []
-  layout: tiled
+  - name: stories
+    panes:
+      - title: claude
+        command: "claude --resume || claude"
+      - title: shell
+        split: v
+        percent: 30
