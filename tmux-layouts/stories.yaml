@@ -1,0 +1,6 @@
+description: Analytic Stories claude
+session: stories
+windows:
+- name: stories
+  panes: []
+  layout: tiled

@@ -1,0 +1,6 @@
+description: Detection Efficacy claude session
+session: detection
+windows:
+- name: detection
+  panes: []
+  layout: tiled
