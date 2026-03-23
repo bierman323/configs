@@ -1,0 +1,25 @@
+description: "Home server connections"
+session: servers
+directory: "~"
+windows:
+  - name: shell
+    panes:
+      - title: local
+  - name: servers
+    layout: tiled
+    panes:
+      - title: mini
+        command: ssh mini
+      - title: mini-2
+        split: h
+        percent: 60
+        command: ssh mini-2
+      - title: trailer
+        split: v
+        command: ssh trailer
+      - title: big-boy
+        split: h
+        command: ssh big-boy
+      - title: ubuntu-pi5
+        split: h
+        command: ssh ubuntu-pi5

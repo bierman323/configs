@@ -1,0 +1,24 @@
+description: "TAS integrations lab"
+session: integrations
+directory: "~"
+pre_commands:
+  - "sft resolve REDACTED-BASTION-HOST"
+windows:
+  - name: integrations
+    layout: tiled
+    panes:
+      - title: kali
+        command: ssh cpq-kali
+      - title: pfsense
+        split: v
+        command: ssh tas-pfsense
+      - title: juniper
+        split: v
+        command: ssh tas-juniper
+      - title: ubiquity
+        split: v
+        command: ssh tas-ubiquity
+  - name: Proxy
+    panes:
+      - title: proxy
+        command: ssh tas-proxy

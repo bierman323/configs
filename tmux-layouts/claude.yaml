@@ -1,0 +1,14 @@
+description: "Claude Code dev session"
+directory: "~"
+tab:
+  title: "claude-dev"
+  color: [80, 180, 80]
+windows:
+  - name: code
+    panes:
+      - title: shell
+        split: h
+      - title: claude
+        split: h
+        percent: 70
+        command: "claude --resume || claude"

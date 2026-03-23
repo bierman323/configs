@@ -1,0 +1,16 @@
+description: "Default dev session with neovim and shells"
+directory: "~"
+windows:
+  - name: neovim
+    panes:
+      - title: editor
+        command: nvim
+  - name: remote
+    focus_pane: 1
+    panes:
+      - title: shell-1
+        command: zsh
+      - title: shell-2
+        split: h
+      - title: shell-3
+        split: v

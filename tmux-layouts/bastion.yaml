@@ -1,0 +1,27 @@
+description: "Bastion host connections across all pods"
+session: bastion
+directory: "~"
+pre_commands:
+  - "sft resolve REDACTED-BASTION-HOST"
+windows:
+  - name: bastions
+    layout: tiled
+    panes:
+      - title: us001
+        command: "ssh REDACTED-BASTION-HOST"
+      - title: us002
+        split: h
+        percent: 33
+        command: "ssh REDACTED-BASTION-HOST"
+      - title: us003
+        split: v
+        command: "ssh REDACTED-BASTION-HOST"
+      - title: ca001
+        split: h
+        command: "ssh REDACTED-BASTION-HOST"
+      - title: eu001
+        split: v
+        command: "ssh REDACTED-BASTION-HOST"
+      - title: au001
+        split: v
+        command: "ssh REDACTED-BASTION-HOST"
