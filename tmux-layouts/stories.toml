@@ -1,0 +1,15 @@
+description = "Analytic Stories claude session"
+session = "stories"
+directory = "~/code/analytic-stories"
+
+[[windows]]
+name = "stories"
+
+[[windows.panes]]
+title = "claude"
+command = "claude --resume || claude"
+
+[[windows.panes]]
+title = "shell"
+split = "v"
+percent = 30

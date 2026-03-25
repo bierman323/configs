@@ -1,0 +1,26 @@
+description = "Lab VM connections"
+session = "lab"
+directory = "~"
+
+[[windows]]
+name = "remotes"
+layout = "tiled"
+
+[[windows.panes]]
+title = "kali"
+command = "ssh bb-kali-static"
+
+[[windows.panes]]
+title = "ubuntu"
+split = "v"
+command = "ssh bb-ubuntu-static"
+
+[[windows.panes]]
+title = "ubuntu-24"
+split = "v"
+command = "ssh bb-Ubuntu24-04-test"
+
+[[windows.panes]]
+title = "rhel-9"
+split = "v"
+command = "ssh bb-RH9-Test"

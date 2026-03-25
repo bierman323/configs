@@ -1,0 +1,19 @@
+description = "Claude Code dev session"
+directory = "~"
+
+[tab]
+title = "claude-dev"
+color = [80, 180, 80]
+
+[[windows]]
+name = "code"
+
+[[windows.panes]]
+title = "shell"
+split = "h"
+
+[[windows.panes]]
+title = "claude"
+split = "h"
+percent = 70
+command = "claude --resume || claude"

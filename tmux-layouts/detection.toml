@@ -1,0 +1,15 @@
+description = "Detection Efficacy claude session"
+session = "detection"
+directory = "~/code/detection-efficacy"
+
+[[windows]]
+name = "detection"
+
+[[windows.panes]]
+title = "claude"
+command = "claude --resume || claude"
+
+[[windows.panes]]
+title = "shell"
+split = "v"
+percent = 30

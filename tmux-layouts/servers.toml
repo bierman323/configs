@@ -1,0 +1,38 @@
+description = "Home server connections"
+session = "servers"
+directory = "~"
+
+[[windows]]
+name = "shell"
+
+[[windows.panes]]
+title = "local"
+
+[[windows]]
+name = "servers"
+layout = "tiled"
+
+[[windows.panes]]
+title = "mini"
+command = "ssh mini"
+
+[[windows.panes]]
+title = "mini-2"
+split = "h"
+percent = 60
+command = "ssh mini-2"
+
+[[windows.panes]]
+title = "trailer"
+split = "v"
+command = "ssh trailer"
+
+[[windows.panes]]
+title = "big-boy"
+split = "h"
+command = "ssh big-boy"
+
+[[windows.panes]]
+title = "ubuntu-pi5"
+split = "h"
+command = "ssh ubuntu-pi5"

@@ -1,0 +1,21 @@
+description = "Monitor connections"
+session = "monitor"
+directory = "~"
+
+[[windows]]
+name = "remotes"
+layout = "tiled"
+
+[[windows.panes]]
+title = "monitor-1"
+command = "ssh monitor.threatlab.internal"
+
+[[windows.panes]]
+title = "monitor-2"
+split = "h"
+percent = 33
+command = "ssh monitor.threatlab.internal"
+
+[[windows.panes]]
+title = "local"
+split = "h"

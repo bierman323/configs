@@ -1,4 +1,4 @@
-CORP_CA_BUNDLE="${HOME}/awn-corp-ca-bundle.pem"
+CORP_CA_BUNDLE="${HOME}/Documents/certs-and-keys/awn-corp-ca-bundle.pem"
 export SSL_CERT_FILE="${CORP_CA_BUNDLE}" # openssl / pip / golang / rust / php
 export REQUESTS_CA_BUNDLE="${CORP_CA_BUNDLE}" # requests
 export AWS_CA_BUNDLE="${CORP_CA_BUNDLE}" # boto3

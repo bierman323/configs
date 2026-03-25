@@ -1,0 +1,36 @@
+description = "TAS integrations lab"
+session = "integrations"
+directory = "~"
+pre_commands = [
+    "sft resolve bastion241.us001-prod.rtkwlf.io",
+]
+
+[[windows]]
+name = "integrations"
+layout = "tiled"
+
+[[windows.panes]]
+title = "kali"
+command = "ssh cpq-kali"
+
+[[windows.panes]]
+title = "pfsense"
+split = "v"
+command = "ssh tas-pfsense"
+
+[[windows.panes]]
+title = "juniper"
+split = "v"
+command = "ssh tas-juniper"
+
+[[windows.panes]]
+title = "ubiquity"
+split = "v"
+command = "ssh tas-ubiquity"
+
+[[windows]]
+name = "Proxy"
+
+[[windows.panes]]
+title = "proxy"
+command = "ssh tas-proxy"

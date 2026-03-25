@@ -34,6 +34,11 @@ if [[ -f "$HOME/.zshrc_sensitive" ]]; then
   source "$HOME/.zshrc_sensitive"
 fi
 
+# Check if my organization stuff is present
+if [[ -d "$HOME/organize/gtd-scripts" ]]; then
+  export PATH="$HOME/organize/gtd-scripts:$PATH"
+fi
+
 # Load work-specific sensitive variables if on work Mac
 if [[ "$IS_WORK_MAC" == "true" ]] && [[ -f "$HOME/.zshrc_work_sensitive" ]]; then
   source "$HOME/.zshrc_work_sensitive"
@@ -43,6 +48,12 @@ fi
 if [[ "$IS_WORK_MAC" == "true" ]] && [[ -f "$HOME/.zshenv_work_sensitive" ]]; then
   source "$HOME/.zshenv_work_sensitive"
 fi
+
+# Load AWN bearer token if available
+[[ -f "$HOME/.awn_token" ]] && source "$HOME/.awn_token"
+
+# Load dev deployment environment variables
+[[ -f "$HOME/.aw_deploy_env" ]] && source "$HOME/.aw_deploy_env"
 
 # Configure OhMyZSH first - check both standard and alternate locations
 OH_MY_PATH="$HOME/.local/oh-my-zsh"
