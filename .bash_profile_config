@@ -48,6 +48,11 @@ if [[ -d "$HOME/bin" ]]; then
   PATH="$PATH:$HOME/bin"
 fi
 
+# Check if my organization stuff is present
+if [[ -d "$HOME/organize/gtd-scripts" ]]; then
+  export PATH="$HOME/organize/gtd-scripts:$PATH"
+fi
+
 # Configure eza
 if command_exists eza; then
   source "$HOME/.bashrc_eza"

@@ -1,12 +1,10 @@
 return {
-  "nvim-treesitter/nvim-treesitter", 
+  "nvim-treesitter/nvim-treesitter",
   build = ":TSUpdate",
   config = function()
-    local config = require("nvim-treesitter.configs")
-    config.setup({
-      ensure_installed = {"lua", "python", "bash"},
-      highlight = { enable = true},
-      indent = { enable = true}
-    })
-  end
+    -- nvim-treesitter now uses vim.treesitter directly (no more configs module)
+    -- ensure_installed is handled by :TSInstall / :TSUpdate
+    -- Highlight and indent are enabled by default in nvim 0.11+
+    vim.treesitter.language.register("terraform", "terraform-vars")
+  end,
 }

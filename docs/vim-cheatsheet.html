@@ -1,0 +1,1466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vim / Neovim Cheatsheet - Arctic Wolf Labs</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Encode+Sans:wght@400;600;800&family=Lato:wght@300;400;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Light theme */
+            --bg: #F0F2F5;
+            --card-bg: #FFFFFF;
+            --border: #D8DEE4;
+            --text-primary: #1A2332;
+            --text-secondary: #5A6A7D;
+
+            /* Brand colors */
+            --aw-primary: #0059B2;
+            --aw-bright: #0066FF;
+            --aw-accent: #0099FF;
+            --aw-light-accent: #83D6FF;
+
+            /* Section accent colors */
+            --purple: #A855F7;
+            --pink: #EC4899;
+            --amber: #F59E0B;
+            --teal: #06B6D4;
+            --green: #10B981;
+            --indigo: #6366F1;
+            --rose: #F43F5E;
+            --sky: #0EA5E9;
+            --lime: #84CC16;
+            --orange: #F97316;
+        }
+
+        [data-theme="dark"] {
+            --bg: #00244C;
+            --card-bg: #182A3A;
+            --border: #3A4958;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A8B8C8;
+        }
+
+        /* Flash-of-wrong-theme prevention */
+        html {
+            background-color: #00244C;
+            color: #FFFFFF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Navigation */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: var(--card-bg);
+            border-bottom: 2px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-family: 'Encode Sans', sans-serif;
+            font-weight: 800;
+            font-size: 1.25rem;
+            color: var(--aw-primary);
+        }
+
+        .nav-brand img {
+            height: 40px;
+            width: auto;
+        }
+
+        /* Logo filter for light/dark mode */
+        :root .nav-brand img {
+            filter: brightness(0.2);
+        }
+
+        [data-theme="dark"] .nav-brand img {
+            filter: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .nav-links a {
+            padding: 0.5rem 1rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .nav-links a:hover {
+            background: var(--aw-accent);
+            color: white;
+        }
+
+        .theme-toggle {
+            display: flex;
+            gap: 0.25rem;
+            background: var(--bg);
+            padding: 0.25rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .theme-toggle button {
+            padding: 0.5rem 0.75rem;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+            font-family: 'Lato', sans-serif;
+        }
+
+        .theme-toggle button.active {
+            background: var(--aw-accent);
+            color: white;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #000000 0%, #00244C 50%, #0066FF 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        header h1 {
+            font-family: 'Encode Sans', sans-serif;
+            font-weight: 800;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 1.5rem;
+        }
+
+        .config-badges {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+        }
+
+        .badge {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Main content */
+        main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        section {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        section h2 {
+            font-family: 'Encode Sans', sans-serif;
+            font-weight: 800;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        section h3 {
+            font-family: 'Encode Sans', sans-serif;
+            font-weight: 600;
+            font-size: 1.3rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .section-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        /* Section-specific colors */
+        #modes .section-icon { background: var(--purple); color: white; }
+        #motion .section-icon { background: var(--aw-accent); color: white; }
+        #editing .section-icon { background: var(--green); color: white; }
+        #search .section-icon { background: var(--amber); color: white; }
+        #registers .section-icon { background: var(--pink); color: white; }
+        #splits .section-icon { background: var(--teal); color: white; }
+        #buffers .section-icon { background: var(--indigo); color: white; }
+        #marks .section-icon { background: var(--rose); color: white; }
+        #macros .section-icon { background: var(--orange); color: white; }
+        #custom .section-icon { background: var(--aw-primary); color: white; }
+        #plugins .section-icon { background: var(--sky); color: white; }
+        #commands .section-icon { background: var(--lime); color: white; }
+        #settings .section-icon { background: var(--purple); color: white; }
+        #qrc .section-icon { background: var(--aw-accent); color: white; }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.95rem;
+        }
+
+        thead {
+            background: var(--bg);
+        }
+
+        th {
+            padding: 0.75rem;
+            text-align: left;
+            font-weight: 700;
+            border-bottom: 2px solid var(--border);
+        }
+
+        td {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tbody tr:hover {
+            background: var(--bg);
+        }
+
+        /* Code and kbd styling */
+        code, kbd {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--bg);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+            border: 1px solid var(--border);
+        }
+
+        kbd.custom {
+            background: linear-gradient(135deg, var(--aw-accent), var(--aw-bright));
+            color: white;
+            border: none;
+            font-weight: 600;
+        }
+
+        pre {
+            background: var(--bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            line-height: 1.5;
+        }
+
+        pre code {
+            background: none;
+            border: none;
+            padding: 0;
+        }
+
+        /* Doc links */
+        .doc-links {
+            display: inline-flex;
+            gap: 0.5rem;
+            margin-left: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .doc-link {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: var(--aw-accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .doc-link:hover {
+            background: var(--aw-bright);
+            transform: translateY(-1px);
+        }
+
+        /* Note blocks */
+        blockquote {
+            background: var(--bg);
+            border-left: 4px solid var(--aw-accent);
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--card-bg);
+            border-top: 2px solid var(--border);
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        footer .brand {
+            font-family: 'Encode Sans', sans-serif;
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: var(--aw-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        footer .date {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        footer .keyboard-hints {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        footer .keyboard-hints kbd {
+            font-size: 0.8em;
+        }
+
+        /* Help modal */
+        #help-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #help-modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 12px;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 2px solid var(--aw-accent);
+        }
+
+        .modal-content h2 {
+            font-family: 'Encode Sans', sans-serif;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            color: var(--aw-primary);
+        }
+
+        .modal-content table {
+            margin-bottom: 1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem;
+            }
+
+            .nav-links {
+                width: 100%;
+                justify-content: center;
+            }
+
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            main {
+                padding: 1rem;
+            }
+
+            section {
+                padding: 1.5rem;
+            }
+
+            table {
+                font-size: 0.85rem;
+            }
+
+            th, td {
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-brand">
+            <img src="data:image/png;base64,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" alt="Arctic Wolf Logo">
+            <span>Arctic Wolf Labs</span>
+        </div>
+        <div class="nav-links">
+            <a href="#modes">Modes</a>
+            <a href="#motion">Motion</a>
+            <a href="#editing">Editing</a>
+            <a href="#search">Search</a>
+            <a href="#registers">Registers</a>
+            <a href="#splits">Splits</a>
+            <a href="#buffers">Buffers</a>
+            <a href="#marks">Marks</a>
+            <a href="#macros">Macros</a>
+            <a href="#custom">Custom</a>
+            <a href="#plugins">Plugins</a>
+            <a href="#commands">Commands</a>
+            <a href="#settings">Settings</a>
+            <a href="#qrc">QRC</a>
+        </div>
+        <div class="theme-toggle">
+            <button onclick="setTheme('auto')" class="active" id="theme-auto">Auto</button>
+            <button onclick="setTheme('light')" id="theme-light">Light</button>
+            <button onclick="setTheme('dark')" id="theme-dark">Dark</button>
+        </div>
+    </nav>
+
+    <header>
+        <h1>Vim / Neovim Cheatsheet</h1>
+        <div class="subtitle">Complete reference for vim keybindings, plugins, and configuration</div>
+        <div class="config-badges">
+            <div class="badge">Leader: \ (backslash)</div>
+            <div class="badge">Config: ~/.config/nvim/</div>
+            <div class="badge">Theme: Catppuccin</div>
+            <div class="badge">Statusline: Lualine (Dracula)</div>
+            <div class="badge">Plugin Manager: lazy.nvim</div>
+        </div>
+    </header>
+
+    <main>
+        <section id="modes">
+            <h2><span class="section-icon">M</span> Modes</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Key</th>
+                        <th>Mode</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><kbd>i</kbd></td><td>Insert</td><td>Insert before cursor</td></tr>
+                    <tr><td><kbd>I</kbd></td><td>Insert</td><td>Insert at beginning of line</td></tr>
+                    <tr><td><kbd>a</kbd></td><td>Insert</td><td>Append after cursor</td></tr>
+                    <tr><td><kbd>A</kbd></td><td>Insert</td><td>Append at end of line</td></tr>
+                    <tr><td><kbd>o</kbd></td><td>Insert</td><td>Open new line below</td></tr>
+                    <tr><td><kbd>O</kbd></td><td>Insert</td><td>Open new line above</td></tr>
+                    <tr><td><kbd>v</kbd></td><td>Visual</td><td>Character-wise selection</td></tr>
+                    <tr><td><kbd>V</kbd></td><td>Visual</td><td>Line-wise selection</td></tr>
+                    <tr><td><kbd>Ctrl-v</kbd></td><td>Visual Block</td><td>Column selection</td></tr>
+                    <tr><td><kbd>R</kbd></td><td>Replace</td><td>Overtype mode</td></tr>
+                    <tr><td><kbd>:</kbd></td><td>Command</td><td>Enter command line</td></tr>
+                    <tr><td><kbd>Esc</kbd></td><td>Normal</td><td>Return to normal mode</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="motion">
+            <h2><span class="section-icon">→</span> Motion</h2>
+
+            <h3>Basic Movement</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Key</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><kbd>h</kbd> / <kbd>l</kbd></td><td>Left / right</td></tr>
+                    <tr><td><kbd>j</kbd> / <kbd>k</kbd></td><td>Down / up</td></tr>
+                    <tr><td><kbd>w</kbd> / <kbd>W</kbd></td><td>Next word / WORD start</td></tr>
+                    <tr><td><kbd>e</kbd> / <kbd>E</kbd></td><td>Next word / WORD end</td></tr>
+                    <tr><td><kbd>b</kbd> / <kbd>B</kbd></td><td>Previous word / WORD start</td></tr>
+                    <tr><td><kbd>0</kbd></td><td>Beginning of line</td></tr>
+                    <tr><td><kbd>^</kbd></td><td>First non-blank character</td></tr>
+                    <tr><td><kbd>$</kbd></td><td>End of line</td></tr>
+                    <tr><td><kbd>gg</kbd></td><td>First line of file</td></tr>
+                    <tr><td><kbd>G</kbd></td><td>Last line of file</td></tr>
+                    <tr><td><kbd>{number}G</kbd></td><td>Go to line number</td></tr>
+                    <tr><td><kbd>{</kbd> / <kbd>}</kbd></td><td>Previous / next paragraph</td></tr>
+                    <tr><td><kbd>(</kbd> / <kbd>)</kbd></td><td>Previous / next sentence</td></tr>
+                    <tr><td><kbd>%</kbd></td><td>Matching bracket</td></tr>
+                    <tr><td><kbd>H</kbd> / <kbd>M</kbd> / <kbd>L</kbd></td><td>Top / middle / bottom of screen</td></tr>
+                </tbody>
+            </table>
+
+            <h3>Scrolling</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Key</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><kbd>Ctrl-d</kbd> / <kbd>Ctrl-u</kbd></td><td>Half page down / up</td></tr>
+                    <tr><td><kbd>Ctrl-f</kbd> / <kbd>Ctrl-b</kbd></td><td>Full page down / up</td></tr>
+                    <tr><td><kbd>Ctrl-e</kbd> / <kbd>Ctrl-y</kbd></td><td>Scroll one line down / up</td></tr>
+                    <tr><td><kbd>zz</kbd></td><td>Center cursor on screen</td></tr>
+                    <tr><td><kbd>zt</kbd> / <kbd>zb</kbd></td><td>Cursor to top / bottom</td></tr>
+                </tbody>
+            </table>
+
+            <h3>Jumping</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Key</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><kbd>Ctrl-o</kbd></td><td>Jump back (older position)</td></tr>
+                    <tr><td><kbd>Ctrl-i</kbd></td><td>Jump forward (newer position)</td></tr>
+                    <tr><td><kbd>` `</kbd></td><td>Jump to last position</td></tr>
+                    <tr><td><kbd>gi</kbd></td><td>Jump to last insert position and enter insert mode</td></tr>
+                    <tr><td><kbd>gd</kbd></td><td>Go to definition (LSP)</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="editing">
+            <h2><span class="section-icon">E</span> Editing</h2>
+
+            <h3>Operators (combine with motions)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Key</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><kbd>d</kbd></td><td>Delete</td></tr>
+                    <tr><td><kbd>c</kbd></td><td>Change (delete + insert)</td></tr>
+                    <tr><td><kbd>y</kbd></td><td>Yank (copy)</td></tr>
+                    <tr><td><kbd>&gt;</kbd> / <kbd>&lt;</kbd></td><td>Indent / dedent</td></tr>
+                    <tr><td><kbd>=</kbd></td><td>Auto-indent</td></tr>
+                    <tr><td><kbd>gU</kbd> / <kbd>gu</kbd></td><td>Uppercase / lowercase</td></tr>
+                </tbody>
+            </table>
+
+            <h3>Common Combinations</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Key</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><kbd>dd</kbd></td><td>Delete line</td></tr>
+                    <tr><td><kbd>cc</kbd></td><td>Change entire line</td></tr>
+                    <tr><td><kbd>yy</kbd></td><td>Yank line</td></tr>
+                    <tr><td><kbd>D</kbd></td><td>Delete to end of line</td></tr>
+                    <tr><td><kbd>C</kbd></td><td>Change to end of line</td></tr>
+                    <tr><td><kbd>x</kbd></td><td>Delete character under cursor</td></tr>
+                    <tr><td><kbd>s</kbd></td><td>Substitute character (delete + insert)</td></tr>
+                    <tr><td><kbd>S</kbd></td><td>Substitute entire line</td></tr>
+                    <tr><td><kbd>r{char}</kbd></td><td>Replace single character</td></tr>
+                    <tr><td><kbd>J</kbd></td><td>Join line below to current</td></tr>
+                    <tr><td><kbd>~</kbd></td><td>Toggle case of character</td></tr>
+                    <tr><td><kbd>.</kbd></td><td>Repeat last change</td></tr>
+                    <tr><td><kbd>u</kbd></td><td>Undo</td></tr>
+                    <tr><td><kbd>Ctrl-r</kbd></td><td>Redo</td></tr>
+                </tbody>
+            </table>
+
+            <h3>Text Objects (use with operators)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Key</th>
+                        <th>Scope</th>
+                        <th>Examples</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><kbd>iw</kbd> / <kbd>aw</kbd></td><td>Word</td><td><kbd>diw</kbd> delete inner word, <kbd>caw</kbd> change a word</td></tr>
+                    <tr><td><kbd>is</kbd> / <kbd>as</kbd></td><td>Sentence</td><td><kbd>dis</kbd> delete inner sentence</td></tr>
+                    <tr><td><kbd>ip</kbd> / <kbd>ap</kbd></td><td>Paragraph</td><td><kbd>yip</kbd> yank inner paragraph</td></tr>
+                    <tr><td><kbd>i"</kbd> / <kbd>a"</kbd></td><td>Double quotes</td><td><kbd>ci"</kbd> change inside quotes</td></tr>
+                    <tr><td><kbd>i'</kbd> / <kbd>a'</kbd></td><td>Single quotes</td><td><kbd>di'</kbd> delete inside quotes</td></tr>
+                    <tr><td><kbd>i)</kbd> / <kbd>a)</kbd></td><td>Parentheses</td><td><kbd>ci)</kbd> change inside parens</td></tr>
+                    <tr><td><kbd>i]</kbd> / <kbd>a]</kbd></td><td>Brackets</td><td><kbd>di]</kbd> delete inside brackets</td></tr>
+                    <tr><td><kbd>i}</kbd> / <kbd>a}</kbd></td><td>Braces</td><td><kbd>ci}</kbd> change inside braces</td></tr>
+                    <tr><td><kbd>it</kbd> / <kbd>at</kbd></td><td>HTML tag</td><td><kbd>dit</kbd> delete inside tag</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="search">
+            <h2><span class="section-icon">/</span> Search & Replace</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Key</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><kbd>/pattern</kbd></td><td>Search forward</td></tr>
+                    <tr><td><kbd>?pattern</kbd></td><td>Search backward</td></tr>
+                    <tr><td><kbd>n</kbd> / <kbd>N</kbd></td><td>Next / previous match</td></tr>
+                    <tr><td><kbd>*</kbd> / <kbd>#</kbd></td><td>Search word under cursor forward / backward</td></tr>
+                    <tr><td><kbd class="custom">\&lt;space&gt;</kbd></td><td>Clear search highlighting</td></tr>
+                    <tr><td><kbd class="custom">\r</kbd></td><td>Search and replace (cursor in replace field)</td></tr>
+                    <tr><td><kbd class="custom">\rc</kbd></td><td>Search and replace with confirm</td></tr>
+                    <tr><td><kbd class="custom">s*</kbd></td><td>Multi-cursor workaround: type replacement, then <kbd>.</kbd> to repeat</td></tr>
+                    <tr><td><kbd class="custom">s*</kbd> (visual)</td><td>Same as above but for visual selection</td></tr>
+                    <tr><td><kbd>:%s/old/new/g</kbd></td><td>Replace all in file</td></tr>
+                    <tr><td><kbd>:%s/old/new/gc</kbd></td><td>Replace all with confirm</td></tr>
+                    <tr><td><kbd>:s/old/new/g</kbd></td><td>Replace all on current line</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="registers">
+            <h2><span class="section-icon">"</span> Registers & Clipboard</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Key</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><kbd>"ay</kbd></td><td>Yank into register <kbd>a</kbd></td></tr>
+                    <tr><td><kbd>"ap</kbd></td><td>Paste from register <kbd>a</kbd></td></tr>
+                    <tr><td><kbd>"+y</kbd></td><td>Yank to system clipboard</td></tr>
+                    <tr><td><kbd>"+p</kbd></td><td>Paste from system clipboard</td></tr>
+                    <tr><td><kbd class="custom">\sc</kbd></td><td>System clipboard register (<kbd>"*</kbd>)</td></tr>
+                    <tr><td><kbd>:reg</kbd></td><td>Show all registers</td></tr>
+                    <tr><td><kbd>p</kbd> / <kbd>P</kbd></td><td>Paste after / before cursor</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="splits">
+            <h2><span class="section-icon">⊞</span> Windows & Splits</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Key</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><kbd>:vs</kbd> / <kbd>Ctrl-w v</kbd></td><td>Vertical split</td></tr>
+                    <tr><td><kbd>:sp</kbd> / <kbd>Ctrl-w s</kbd></td><td>Horizontal split</td></tr>
+                    <tr><td><kbd>Ctrl-w h/j/k/l</kbd></td><td>Navigate splits (vim movement)</td></tr>
+                    <tr><td><kbd>Ctrl-w H/J/K/L</kbd></td><td>Move split to far left/bottom/top/right</td></tr>
+                    <tr><td><kbd>Ctrl-w =</kbd></td><td>Equalize split sizes</td></tr>
+                    <tr><td><kbd>Ctrl-w +/-</kbd></td><td>Increase / decrease height</td></tr>
+                    <tr><td><kbd>Ctrl-w &gt;/&lt;</kbd></td><td>Increase / decrease width</td></tr>
+                    <tr><td><kbd>Ctrl-w q</kbd></td><td>Close split</td></tr>
+                    <tr><td><kbd>Ctrl-w o</kbd></td><td>Close all other splits</td></tr>
+                    <tr><td><kbd>Ctrl-w r</kbd></td><td>Rotate splits</td></tr>
+                    <tr><td><kbd>Ctrl-w T</kbd></td><td>Move split to new tab</td></tr>
+                </tbody>
+            </table>
+            <blockquote>Splits open to the <strong>right</strong> (<code>splitright</code>) and <strong>below</strong> (<code>splitbelow</code>).</blockquote>
+        </section>
+
+        <section id="buffers">
+            <h2><span class="section-icon">B</span> Buffers & Tabs</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Key</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><kbd>:e file</kbd></td><td>Edit file in new buffer</td></tr>
+                    <tr><td><kbd>:bn</kbd> / <kbd>:bp</kbd></td><td>Next / previous buffer</td></tr>
+                    <tr><td><kbd>:bd</kbd></td><td>Delete (close) buffer</td></tr>
+                    <tr><td><kbd>:ls</kbd></td><td>List buffers</td></tr>
+                    <tr><td><kbd>:b{n}</kbd></td><td>Switch to buffer number</td></tr>
+                    <tr><td><kbd>:tabnew</kbd></td><td>New tab</td></tr>
+                    <tr><td><kbd>gt</kbd> / <kbd>gT</kbd></td><td>Next / previous tab</td></tr>
+                </tbody>
+            </table>
+            <blockquote>Lualine tabline shows <strong>windows</strong> on left, <strong>buffers</strong> on right.</blockquote>
+        </section>
+
+        <section id="marks">
+            <h2><span class="section-icon">m</span> Marks</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Key</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><kbd>m{a-z}</kbd></td><td>Set local mark</td></tr>
+                    <tr><td><kbd>m{A-Z}</kbd></td><td>Set global mark (across files)</td></tr>
+                    <tr><td><kbd>`{mark}</kbd></td><td>Jump to mark (exact position)</td></tr>
+                    <tr><td><kbd>'{mark}</kbd></td><td>Jump to mark (line start)</td></tr>
+                    <tr><td><kbd>:marks</kbd></td><td>List all marks</td></tr>
+                    <tr><td><kbd>`0</kbd></td><td>Position when last exited vim</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="macros">
+            <h2><span class="section-icon">q</span> Macros & Folding</h2>
+
+            <h3>Macros</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Key</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><kbd>q{a-z}</kbd></td><td>Start recording macro to register</td></tr>
+                    <tr><td><kbd>q</kbd></td><td>Stop recording</td></tr>
+                    <tr><td><kbd>@{a-z}</kbd></td><td>Play macro</td></tr>
+                    <tr><td><kbd>@@</kbd></td><td>Repeat last macro</td></tr>
+                    <tr><td><kbd>{n}@{a-z}</kbd></td><td>Play macro n times</td></tr>
+                </tbody>
+            </table>
+
+            <h3>Folding</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Key</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><kbd>za</kbd></td><td>Toggle fold</td></tr>
+                    <tr><td><kbd>zo</kbd> / <kbd>zc</kbd></td><td>Open / close fold</td></tr>
+                    <tr><td><kbd>zR</kbd> / <kbd>zM</kbd></td><td>Open all / close all folds</td></tr>
+                    <tr><td><kbd>zj</kbd> / <kbd>zk</kbd></td><td>Next / previous fold</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="custom">
+            <h2><span class="section-icon">*</span> Custom Bindings</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Key</th>
+                        <th>Action</th>
+                        <th>Source</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><kbd class="custom">\ev</kbd></td><td>Edit vim-options.lua in vertical split</td><td>General</td></tr>
+                    <tr><td><kbd class="custom">\vs</kbd></td><td>Open blank vertical split</td><td>General</td></tr>
+                    <tr><td><kbd class="custom">\t</kbd></td><td>Open terminal below</td><td>General</td></tr>
+                    <tr><td><kbd class="custom">\&lt;space&gt;</kbd></td><td>Clear search highlighting</td><td>General</td></tr>
+                    <tr><td><kbd class="custom">\jf</kbd></td><td>Format JSON with python json.tool</td><td>General</td></tr>
+                    <tr><td><kbd class="custom">\jq</kbd></td><td>Format JSON with jq (sorted keys)</td><td>General</td></tr>
+                    <tr><td><kbd class="custom">\sc</kbd></td><td>System clipboard register (<kbd>"*</kbd>)</td><td>General</td></tr>
+                    <tr><td><kbd class="custom">Ctrl-u</kbd> (insert)</td><td>Uppercase previous word</td><td>General</td></tr>
+                    <tr><td><kbd class="custom">\r</kbd></td><td>Search and replace</td><td>General</td></tr>
+                    <tr><td><kbd class="custom">\rc</kbd></td><td>Search and replace with confirm</td><td>General</td></tr>
+                    <tr><td><kbd class="custom">s*</kbd></td><td>Multi-cursor: type replacement, <kbd>.</kbd> to repeat</td><td>General</td></tr>
+                    <tr><td><kbd class="custom">\b</kbd> (visual)</td><td>Base64 decode selection into new tab</td><td>General</td></tr>
+                    <tr><td><kbd class="custom">K</kbd></td><td>Hover documentation</td><td>LSP</td></tr>
+                    <tr><td><kbd class="custom">gd</kbd></td><td>Go to definition</td><td>LSP</td></tr>
+                    <tr><td><kbd class="custom">gr</kbd></td><td>References</td><td>LSP</td></tr>
+                    <tr><td><kbd class="custom">gi</kbd></td><td>Go to implementation</td><td>LSP</td></tr>
+                    <tr><td><kbd class="custom">\ca</kbd></td><td>Code actions</td><td>LSP</td></tr>
+                    <tr><td><kbd class="custom">\rn</kbd></td><td>Rename symbol</td><td>LSP</td></tr>
+                    <tr><td><kbd class="custom">\gf</kbd></td><td>Format file (none-ls / LSP)</td><td>LSP</td></tr>
+                    <tr><td><kbd class="custom">\d</kbd></td><td>Diagnostic float</td><td>LSP</td></tr>
+                    <tr><td><kbd class="custom">[d</kbd> / <kbd class="custom">]d</kbd></td><td>Previous / next diagnostic</td><td>LSP</td></tr>
+                    <tr><td><kbd class="custom">\gs</kbd></td><td>Git status</td><td>Git (fugitive)</td></tr>
+                    <tr><td><kbd class="custom">\gh</kbd></td><td>Diffget right (//3)</td><td>Git (fugitive)</td></tr>
+                    <tr><td><kbd class="custom">\gu</kbd></td><td>Diffget left (//2)</td><td>Git (fugitive)</td></tr>
+                    <tr><td><kbd class="custom">\gb</kbd></td><td>Git blame</td><td>Git (fugitive)</td></tr>
+                    <tr><td><kbd class="custom">\gl</kbd></td><td>Git log (oneline)</td><td>Git (fugitive)</td></tr>
+                    <tr><td><kbd class="custom">\cc</kbd></td><td>Toggle Claude Code pane</td><td>Claude Code</td></tr>
+                    <tr><td><kbd class="custom">\cs</kbd></td><td>Send to Claude (normal or visual)</td><td>Claude Code</td></tr>
+                    <tr><td><kbd class="custom">Ctrl-p</kbd></td><td>Find files</td><td>Telescope</td></tr>
+                    <tr><td><kbd class="custom">\fg</kbd></td><td>Live grep (search content)</td><td>Telescope</td></tr>
+                    <tr><td><kbd class="custom">Ctrl-e</kbd></td><td>Toggle Neo-tree sidebar</td><td>Neo-tree</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="plugins">
+            <h2><span class="section-icon">+</span> Plugins (via lazy.nvim)</h2>
+
+            <h3>
+                Lazy.nvim (Plugin Manager)
+                <div class="doc-links">
+                    <a href="https://lazy.folke.io/" target="_blank" class="doc-link">Docs</a>
+                </div>
+            </h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Command</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><kbd>:Lazy</kbd></td><td>Open plugin manager UI</td></tr>
+                    <tr><td><kbd>:Lazy sync</kbd></td><td>Install, clean, update all plugins</td></tr>
+                    <tr><td><kbd>:Lazy update</kbd></td><td>Update all plugins</td></tr>
+                    <tr><td><kbd>:Lazy check</kbd></td><td>Check for plugin updates</td></tr>
+                    <tr><td><kbd>:Lazy clean</kbd></td><td>Remove unused plugins</td></tr>
+                    <tr><td><kbd>:Lazy health</kbd></td><td>Run health checks</td></tr>
+                    <tr><td><kbd>:Lazy profile</kbd></td><td>Show plugin load times</td></tr>
+                </tbody>
+            </table>
+
+            <h3>
+                Telescope (Fuzzy Finder)
+                <div class="doc-links">
+                    <a href="https://github.com/nvim-telescope/telescope.nvim#usage" target="_blank" class="doc-link">Docs</a>
+                </div>
+            </h3>
+            <p><strong>Custom keymaps:</strong></p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Key</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><kbd class="custom">Ctrl-p</kbd></td><td>Find files</td></tr>
+                    <tr><td><kbd class="custom">\fg</kbd></td><td>Live grep (search content)</td></tr>
+                </tbody>
+            </table>
+            <p><strong>Other built-in pickers (run with <code>:Telescope &lt;picker&gt;</code>):</strong></p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Command</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><kbd>:Telescope buffers</kbd></td><td>List open buffers</td></tr>
+                    <tr><td><kbd>:Telescope oldfiles</kbd></td><td>Recently opened files</td></tr>
+                    <tr><td><kbd>:Telescope help_tags</kbd></td><td>Search help docs</td></tr>
+                    <tr><td><kbd>:Telescope keymaps</kbd></td><td>Search all keymaps</td></tr>
+                    <tr><td><kbd>:Telescope commands</kbd></td><td>Search all commands</td></tr>
+                    <tr><td><kbd>:Telescope diagnostics</kbd></td><td>LSP diagnostics</td></tr>
+                    <tr><td><kbd>:Telescope lsp_references</kbd></td><td>LSP references for word under cursor</td></tr>
+                    <tr><td><kbd>:Telescope git_commits</kbd></td><td>Browse git commits</td></tr>
+                    <tr><td><kbd>:Telescope git_status</kbd></td><td>Git changed files</td></tr>
+                </tbody>
+            </table>
+            <p><strong>Inside Telescope picker:</strong></p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Key</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><kbd>Ctrl-n</kbd> / <kbd>Ctrl-p</kbd></td><td>Next / previous result</td></tr>
+                    <tr><td><kbd>Enter</kbd></td><td>Open file</td></tr>
+                    <tr><td><kbd>Ctrl-x</kbd></td><td>Open in horizontal split</td></tr>
+                    <tr><td><kbd>Ctrl-v</kbd></td><td>Open in vertical split</td></tr>
+                    <tr><td><kbd>Ctrl-t</kbd></td><td>Open in new tab</td></tr>
+                    <tr><td><kbd>Esc</kbd></td><td>Close picker</td></tr>
+                </tbody>
+            </table>
+
+            <h3>
+                Neo-tree (File Explorer)
+                <div class="doc-links">
+                    <a href="https://github.com/nvim-neo-tree/neo-tree.nvim#quickstart" target="_blank" class="doc-link">Docs</a>
+                </div>
+            </h3>
+            <p><strong>Custom keymap:</strong></p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Key</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><kbd class="custom">Ctrl-e</kbd></td><td>Toggle Neo-tree sidebar</td></tr>
+                </tbody>
+            </table>
+            <p><strong>Commands:</strong></p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Command</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><kbd>:Neotree</kbd></td><td>Open file tree (left sidebar)</td></tr>
+                    <tr><td><kbd>:Neotree close</kbd></td><td>Close file tree</td></tr>
+                    <tr><td><kbd>:Neotree reveal</kbd></td><td>Open tree and reveal current file</td></tr>
+                    <tr><td><kbd>:Neotree buffers</kbd></td><td>Show open buffers in tree</td></tr>
+                    <tr><td><kbd>:Neotree git_status</kbd></td><td>Show git changed files in tree</td></tr>
+                    <tr><td><kbd>:Neotree float</kbd></td><td>Open tree as floating window</td></tr>
+                </tbody>
+            </table>
+            <p><strong>Inside Neo-tree:</strong></p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Key</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><kbd>Enter</kbd></td><td>Open file / toggle directory</td></tr>
+                    <tr><td><kbd>a</kbd></td><td>Add file/directory</td></tr>
+                    <tr><td><kbd>d</kbd></td><td>Delete</td></tr>
+                    <tr><td><kbd>r</kbd></td><td>Rename</td></tr>
+                    <tr><td><kbd>c</kbd> / <kbd>m</kbd></td><td>Copy / move</td></tr>
+                    <tr><td><kbd>y</kbd></td><td>Copy path to clipboard</td></tr>
+                    <tr><td><kbd>x</kbd></td><td>Cut to clipboard</td></tr>
+                    <tr><td><kbd>p</kbd></td><td>Paste from clipboard</td></tr>
+                    <tr><td><kbd>q</kbd></td><td>Close Neo-tree</td></tr>
+                    <tr><td><kbd>R</kbd></td><td>Refresh</td></tr>
+                    <tr><td><kbd>H</kbd></td><td>Toggle hidden files</td></tr>
+                    <tr><td><kbd>?</kbd></td><td>Show help</td></tr>
+                </tbody>
+            </table>
+
+            <h3>
+                LSP (Language Server Protocol)
+                <div class="doc-links">
+                    <a href="https://github.com/neovim/nvim-lspconfig#readme" target="_blank" class="doc-link">nvim-lspconfig</a>
+                    <a href="https://neovim.io/doc/user/lsp.html" target="_blank" class="doc-link">nvim 0.11 LSP guide</a>
+                </div>
+            </h3>
+            <p><strong>Custom keymaps:</strong></p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Key</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><kbd class="custom">K</kbd></td><td>Hover documentation</td></tr>
+                    <tr><td><kbd class="custom">gd</kbd></td><td>Go to definition</td></tr>
+                    <tr><td><kbd class="custom">gr</kbd></td><td>References</td></tr>
+                    <tr><td><kbd class="custom">gi</kbd></td><td>Go to implementation</td></tr>
+                    <tr><td><kbd class="custom">\ca</kbd></td><td>Code actions</td></tr>
+                    <tr><td><kbd class="custom">\rn</kbd></td><td>Rename symbol</td></tr>
+                    <tr><td><kbd class="custom">\gf</kbd></td><td>Format file</td></tr>
+                    <tr><td><kbd class="custom">\d</kbd></td><td>Diagnostic float</td></tr>
+                    <tr><td><kbd class="custom">[d</kbd> / <kbd class="custom">]d</kbd></td><td>Previous / next diagnostic</td></tr>
+                </tbody>
+            </table>
+            <p><strong>Useful commands:</strong></p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Command</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><kbd>:LspInfo</kbd></td><td>Show active LSP clients for current buffer</td></tr>
+                    <tr><td><kbd>:LspLog</kbd></td><td>Open LSP log file</td></tr>
+                    <tr><td><kbd>:LspRestart</kbd></td><td>Restart LSP clients</td></tr>
+                    <tr><td><kbd>:checkhealth lsp</kbd></td><td>Run LSP health check</td></tr>
+                </tbody>
+            </table>
+            <p><strong>Configured servers (11 via Mason, using nvim 0.11 <code>vim.lsp.config</code> API):</strong></p>
+            <p><code>lua_ls</code>, <code>pyright</code>, <code>bashls</code>, <code>ansiblels</code>, <code>yamlls</code>, <code>jsonls</code>, <code>gopls</code>, <code>terraformls</code>, <code>ts_ls</code>, <code>dockerls</code>, <code>docker_compose_language_service</code></p>
+
+            <h3>
+                Mason (LSP Server Installer)
+                <div class="doc-links">
+                    <a href="https://github.com/williamboman/mason.nvim#readme" target="_blank" class="doc-link">Docs</a>
+                    <a href="https://github.com/williamboman/mason-lspconfig.nvim#readme" target="_blank" class="doc-link">mason-lspconfig</a>
+                </div>
+            </h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Command</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><kbd>:Mason</kbd></td><td>Open Mason UI (install/update/remove servers)</td></tr>
+                    <tr><td><kbd>:MasonInstall &lt;server&gt;</kbd></td><td>Install a specific server</td></tr>
+                    <tr><td><kbd>:MasonUninstall &lt;server&gt;</kbd></td><td>Remove a server</td></tr>
+                    <tr><td><kbd>:MasonUpdate</kbd></td><td>Update all installed servers</td></tr>
+                    <tr><td><kbd>:MasonLog</kbd></td><td>Open Mason log file</td></tr>
+                </tbody>
+            </table>
+            <p><strong>In the Mason UI:</strong> Press <kbd>i</kbd> to install, <kbd>u</kbd> to update, <kbd>X</kbd> to uninstall.</p>
+
+            <h3>
+                Treesitter (Syntax Highlighting & Indentation)
+                <div class="doc-links">
+                    <a href="https://github.com/nvim-treesitter/nvim-treesitter#readme" target="_blank" class="doc-link">Docs</a>
+                    <a href="https://tree-sitter.github.io/tree-sitter/playground" target="_blank" class="doc-link">Playground</a>
+                </div>
+            </h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Command</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><kbd>:TSInstall &lt;lang&gt;</kbd></td><td>Install a language parser</td></tr>
+                    <tr><td><kbd>:TSUpdate</kbd></td><td>Update all installed parsers</td></tr>
+                    <tr><td><kbd>:TSUninstall &lt;lang&gt;</kbd></td><td>Remove a parser</td></tr>
+                    <tr><td><kbd>:InspectTree</kbd></td><td>Open syntax tree inspector (nvim 0.11 built-in)</td></tr>
+                    <tr><td><kbd>:Inspect</kbd></td><td>Show highlight groups under cursor</td></tr>
+                    <tr><td><kbd>:TSModuleInfo</kbd></td><td>Show which modules are enabled per language</td></tr>
+                </tbody>
+            </table>
+            <p><strong>16 parsers installed:</strong> <code>lua</code>, <code>python</code>, <code>bash</code>, <code>yaml</code>, <code>json</code>, <code>go</code>, <code>terraform</code>, <code>hcl</code>, <code>dockerfile</code>, <code>toml</code>, <code>markdown</code>, <code>markdown_inline</code>, <code>javascript</code>, <code>typescript</code></p>
+
+            <h3>
+                none-ls / null-ls (Formatting & Diagnostics)
+                <div class="doc-links">
+                    <a href="https://github.com/nvimtools/none-ls.nvim#readme" target="_blank" class="doc-link">Docs</a>
+                    <a href="https://github.com/nvimtools/none-ls.nvim/blob/main/doc/BUILTINS.md" target="_blank" class="doc-link">Built-in sources</a>
+                </div>
+            </h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Key / Command</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><kbd class="custom">\gf</kbd></td><td>Format current file</td></tr>
+                    <tr><td><kbd>:NullLsInfo</kbd></td><td>Show active sources for current buffer</td></tr>
+                    <tr><td><kbd>:NullLsLog</kbd></td><td>Open null-ls log</td></tr>
+                </tbody>
+            </table>
+            <p><strong>Currently configured:</strong> <code>stylua</code> (Lua formatting)</p>
+
+            <h3>
+                vim-fugitive (Git)
+                <div class="doc-links">
+                    <a href="https://github.com/tpope/vim-fugitive#readme" target="_blank" class="doc-link">Docs</a>
+                    <a href="http://vimcasts.org/episodes/archive/" target="_blank" class="doc-link">Vimcast tutorials</a>
+                </div>
+            </h3>
+            <p><strong>Custom keymaps:</strong></p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Key</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><kbd class="custom">\gs</kbd></td><td>Git status (<code>:Git</code>)</td></tr>
+                    <tr><td><kbd class="custom">\gh</kbd></td><td>Diffget right (//3)</td></tr>
+                    <tr><td><kbd class="custom">\gu</kbd></td><td>Diffget left (//2)</td></tr>
+                    <tr><td><kbd class="custom">\gb</kbd></td><td>Git blame</td></tr>
+                    <tr><td><kbd class="custom">\gl</kbd></td><td>Git log (oneline)</td></tr>
+                </tbody>
+            </table>
+            <p><strong>Commands:</strong></p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Command</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><kbd>:Git</kbd></td><td>Open git status (stage with <kbd>-</kbd>, commit with <kbd>cc</kbd>)</td></tr>
+                    <tr><td><kbd>:Git diff</kbd></td><td>Show diff</td></tr>
+                    <tr><td><kbd>:Git log</kbd></td><td>Browse commit history</td></tr>
+                    <tr><td><kbd>:Git blame</kbd></td><td>Inline blame annotations</td></tr>
+                    <tr><td><kbd>:Gdiffsplit</kbd></td><td>Open diff in split view</td></tr>
+                    <tr><td><kbd>:Gread</kbd></td><td>Revert file to index (<code>git checkout -- file</code>)</td></tr>
+                    <tr><td><kbd>:Gwrite</kbd></td><td>Stage current file (<code>git add file</code>)</td></tr>
+                    <tr><td><kbd>:Git push</kbd></td><td>Push to remote</td></tr>
+                    <tr><td><kbd>:Git pull</kbd></td><td>Pull from remote</td></tr>
+                </tbody>
+            </table>
+            <p><strong>In <code>:Git</code> status window:</strong> <kbd>s</kbd> (stage file), <kbd>u</kbd> (unstage file), <kbd>-</kbd> (toggle stage/unstage), <kbd>=</kbd> (toggle inline diff), <kbd>cc</kbd> (commit), <kbd>ca</kbd> (amend), <kbd>X</kbd> (discard changes)</p>
+
+            <h3>
+                claude-code.nvim (AI Assistant)
+                <div class="doc-links">
+                    <a href="https://github.com/greggh/claude-code.nvim#readme" target="_blank" class="doc-link">Docs</a>
+                </div>
+            </h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Key / Command</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><kbd class="custom">\cc</kbd></td><td>Toggle Claude Code pane (vertical, 40% width)</td></tr>
+                    <tr><td><kbd class="custom">\cs</kbd></td><td>Send to Claude (normal mode: whole file, visual: selection)</td></tr>
+                    <tr><td><kbd>:ClaudeCode</kbd></td><td>Toggle Claude Code terminal</td></tr>
+                    <tr><td><kbd>:ClaudeCodeSend</kbd></td><td>Send current buffer or selection to Claude</td></tr>
+                </tbody>
+            </table>
+
+            <h3>
+                Catppuccin (Color Scheme)
+                <div class="doc-links">
+                    <a href="https://github.com/catppuccin/nvim#readme" target="_blank" class="doc-link">Docs</a>
+                    <a href="https://github.com/catppuccin/nvim#flavours" target="_blank" class="doc-link">Flavours</a>
+                </div>
+            </h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Command</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><kbd>:colorscheme catppuccin</kbd></td><td>Switch to default flavor</td></tr>
+                    <tr><td><kbd>:colorscheme catppuccin-mocha</kbd></td><td>Dark flavor</td></tr>
+                    <tr><td><kbd>:colorscheme catppuccin-latte</kbd></td><td>Light flavor</td></tr>
+                    <tr><td><kbd>:colorscheme catppuccin-frappe</kbd></td><td>Mid-dark flavor</td></tr>
+                    <tr><td><kbd>:colorscheme catppuccin-macchiato</kbd></td><td>Mid-dark warm flavor</td></tr>
+                </tbody>
+            </table>
+
+            <h3>
+                Lualine (Status Line)
+                <div class="doc-links">
+                    <a href="https://github.com/nvim-lualine/lualine.nvim#readme" target="_blank" class="doc-link">Docs</a>
+                </div>
+            </h3>
+            <p><strong>Current config:</strong> Dracula theme, tabline shows windows (left) and buffers (right). Configured in <code>~/.config/nvim/lua/plugins/lualine.lua</code>.</p>
+        </section>
+
+        <section id="commands">
+            <h2><span class="section-icon">:</span> Useful Commands</h2>
+            <pre><code>:w                     Save file
+:q                     Quit
+:wq / :x / ZZ          Save and quit
+:q! / ZQ               Quit without saving
+:wa                    Save all buffers
+:qa                    Quit all buffers
+:e!                    Revert to last saved
+:set paste / nopaste   Toggle paste mode
+:set wrap / nowrap     Toggle line wrap
+:noh                   Clear search highlighting
+:sort                  Sort selected lines
+:sort u                Sort + remove duplicates
+:!command              Run shell command
+:r !command            Insert command output
+:earlier 5m            Undo to 5 minutes ago
+:later 5m              Redo to 5 minutes ago
+:Mason                 Open Mason LSP installer
+:TSUpdate              Update Treesitter parsers
+:checkhealth           Run health checks</code></pre>
+        </section>
+
+        <section id="settings">
+            <h2><span class="section-icon">⚙</span> Editor Settings</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Setting</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Tabs</td><td>2 spaces (expandtab)</td></tr>
+                    <tr><td>Indentation</td><td>Smart indent</td></tr>
+                    <tr><td>Line numbers</td><td>Relative + absolute</td></tr>
+                    <tr><td>Search</td><td>Incremental, smart case, highlight</td></tr>
+                    <tr><td>Split direction</td><td>Right + below</td></tr>
+                    <tr><td>Scroll offset</td><td>8 lines</td></tr>
+                    <tr><td>Sign column</td><td>Always visible</td></tr>
+                    <tr><td>True color</td><td>Enabled (termguicolors)</td></tr>
+                    <tr><td>Bells</td><td>Disabled (no error/visual bell)</td></tr>
+                    <tr><td>Trailing whitespace</td><td>Auto-stripped on save</td></tr>
+                    <tr><td>Leader</td><td>\ (backslash)</td></tr>
+                    <tr><td>Color scheme</td><td>Catppuccin</td></tr>
+                    <tr><td>Statusline</td><td>Lualine (Dracula theme)</td></tr>
+                    <tr><td>Tabline</td><td>Windows (left) + Buffers (right)</td></tr>
+                    <tr><td>Neovim version</td><td>0.11+ (uses <code>vim.lsp.config</code> API)</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="qrc">
+            <h2><span class="section-icon">Q</span> Quick Reference Card</h2>
+            <pre><code>  MOVEMENT          EDITING           SEARCH            OBJECTS
+ ─────────────────────────────────────────────────────────────────
+  h j k l           d  delete         /pattern          iw  word
+  w b e             c  change         ?pattern          is  sentence
+  0 ^ $             y  yank           n / N next        ip  paragraph
+  gg / G            p  paste          * / # word        i"  quotes
+  { } ( )           u  undo           \&lt;space&gt; clear    i)  parens
+  % bracket         .  repeat         s* multi-cursor   i}  braces
+ ─────────────────────────────────────────────────────────────────
+  CUSTOM KEYS (leader = \)           PLUGINS
+ ─────────────────────────────────────────────────────────────────
+  \ev    edit config                  Ctrl-p   find files
+  \vs    new split                    \fg      live grep
+  \t     terminal                     Ctrl-e   neo-tree
+  \jf    format JSON (python)         K        hover docs
+  \jq    format JSON (jq)             gd       go to def
+  \sc    clipboard register           gr       references
+  \gf    format file                  \ca      code actions
+  \r     search/replace               \rn      rename symbol
+  \b     base64 decode (visual)       \d       diagnostics
+ ─────────────────────────────────────────────────────────────────
+  GIT (fugitive)                      CLAUDE CODE
+ ─────────────────────────────────────────────────────────────────
+  \gs    git status                   \cc      toggle pane
+  \gb    git blame                    \cs      send to claude
+  \gl    git log
+  \gh    diffget //3
+  \gu    diffget //2</code></pre>
+        </section>
+    </main>
+
+    <footer>
+        <div class="brand">Arctic Wolf Labs</div>
+        <div class="date">Generated: 2026-03-25</div>
+        <div class="keyboard-hints">
+            <span><kbd>j</kbd> / <kbd>k</kbd> scroll</span>
+            <span><kbd>g</kbd> / <kbd>G</kbd> top/bottom</span>
+            <span><kbd>t</kbd> toggle theme</span>
+            <span><kbd>?</kbd> help</span>
+            <span><kbd>1-9</kbd>, <kbd>0</kbd> jump sections</span>
+            <span><kbd>Esc</kbd> close modals</span>
+        </div>
+    </footer>
+
+    <div id="help-modal">
+        <div class="modal-content">
+            <h2>Keyboard Shortcuts</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Key</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><kbd>j</kbd></td><td>Scroll down</td></tr>
+                    <tr><td><kbd>k</kbd></td><td>Scroll up</td></tr>
+                    <tr><td><kbd>g</kbd></td><td>Scroll to top</td></tr>
+                    <tr><td><kbd>G</kbd></td><td>Scroll to bottom</td></tr>
+                    <tr><td><kbd>t</kbd></td><td>Toggle theme (Auto → Light → Dark)</td></tr>
+                    <tr><td><kbd>?</kbd></td><td>Show this help</td></tr>
+                    <tr><td><kbd>Esc</kbd></td><td>Close help modal</td></tr>
+                    <tr><td><kbd>1</kbd></td><td>Jump to Modes</td></tr>
+                    <tr><td><kbd>2</kbd></td><td>Jump to Motion</td></tr>
+                    <tr><td><kbd>3</kbd></td><td>Jump to Editing</td></tr>
+                    <tr><td><kbd>4</kbd></td><td>Jump to Search</td></tr>
+                    <tr><td><kbd>5</kbd></td><td>Jump to Registers</td></tr>
+                    <tr><td><kbd>6</kbd></td><td>Jump to Splits</td></tr>
+                    <tr><td><kbd>7</kbd></td><td>Jump to Buffers</td></tr>
+                    <tr><td><kbd>8</kbd></td><td>Jump to Marks</td></tr>
+                    <tr><td><kbd>9</kbd></td><td>Jump to Macros</td></tr>
+                    <tr><td><kbd>0</kbd></td><td>Jump to Custom Bindings</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Theme management
+        const themes = ['auto', 'light', 'dark'];
+        let currentThemeIndex = 0;
+
+        function detectPreferredTheme() {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                return 'dark';
+            }
+            return 'light';
+        }
+
+        function applyTheme(theme) {
+            if (theme === 'auto') {
+                const preferred = detectPreferredTheme();
+                document.documentElement.setAttribute('data-theme', preferred);
+            } else {
+                document.documentElement.setAttribute('data-theme', theme);
+            }
+
+            // Update button states
+            document.querySelectorAll('.theme-toggle button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(`theme-${theme}`).classList.add('active');
+
+            // Save to localStorage
+            localStorage.setItem('theme', theme);
+        }
+
+        function setTheme(theme) {
+            currentThemeIndex = themes.indexOf(theme);
+            applyTheme(theme);
+        }
+
+        function cycleTheme() {
+            currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+            applyTheme(themes[currentThemeIndex]);
+        }
+
+        // Load saved theme or default to auto
+        const savedTheme = localStorage.getItem('theme') || 'auto';
+        setTheme(savedTheme);
+
+        // Listen for system theme changes
+        if (window.matchMedia) {
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+                if (themes[currentThemeIndex] === 'auto') {
+                    applyTheme('auto');
+                }
+            });
+        }
+
+        // Keyboard navigation
+        const sectionIds = ['modes', 'motion', 'editing', 'search', 'registers', 'splits', 'buffers', 'marks', 'macros', 'custom'];
+
+        document.addEventListener('keydown', (e) => {
+            // Don't capture if user is typing in an input
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                return;
+            }
+
+            switch(e.key.toLowerCase()) {
+                case 'j':
+                    window.scrollBy(0, 100);
+                    e.preventDefault();
+                    break;
+                case 'k':
+                    window.scrollBy(0, -100);
+                    e.preventDefault();
+                    break;
+                case 'g':
+                    if (!e.shiftKey) {
+                        window.scrollTo(0, 0);
+                        e.preventDefault();
+                    } else {
+                        window.scrollTo(0, document.body.scrollHeight);
+                        e.preventDefault();
+                    }
+                    break;
+                case 't':
+                    cycleTheme();
+                    e.preventDefault();
+                    break;
+                case '?':
+                    document.getElementById('help-modal').classList.add('active');
+                    e.preventDefault();
+                    break;
+                case 'escape':
+                    document.getElementById('help-modal').classList.remove('active');
+                    e.preventDefault();
+                    break;
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9':
+                case '0':
+                    const index = e.key === '0' ? 9 : parseInt(e.key) - 1;
+                    if (sectionIds[index]) {
+                        document.getElementById(sectionIds[index]).scrollIntoView({ behavior: 'smooth' });
+                        e.preventDefault();
+                    }
+                    break;
+            }
+        });
+
+        // Close modal on backdrop click
+        document.getElementById('help-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'help-modal') {
+                e.target.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
