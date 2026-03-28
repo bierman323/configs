@@ -2,23 +2,21 @@ description = "Default dev session with neovim and shells"
 directory = "~"
 
 [[windows]]
-name = "neovim"
+name = "dev"
+focus_pane = 1
 
 [[windows.panes]]
 title = "editor"
 command = "nvim"
 
-[[windows]]
-name = "remote"
-focus_pane = 1
-
 [[windows.panes]]
 title = "shell-1"
+split = "h"
 command = "zsh"
 
 [[windows.panes]]
 title = "shell-2"
-split = "h"
+split = "v"
 
 [[windows.panes]]
 title = "shell-3"

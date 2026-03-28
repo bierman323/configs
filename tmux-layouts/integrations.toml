@@ -28,9 +28,7 @@ title = "ubiquity"
 split = "v"
 command = "ssh tas-ubiquity"
 
-[[windows]]
-name = "Proxy"
-
 [[windows.panes]]
 title = "proxy"
+split = "v"
 command = "ssh tas-proxy"

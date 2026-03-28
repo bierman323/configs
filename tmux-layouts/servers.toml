@@ -3,33 +3,30 @@ session = "servers"
 directory = "~"
 
 [[windows]]
-name = "shell"
-
-[[windows.panes]]
-title = "local"
-
-[[windows]]
 name = "servers"
 layout = "tiled"
 
 [[windows.panes]]
+title = "local"
+
+[[windows.panes]]
 title = "mini"
+split = "h"
 command = "ssh mini"
 
 [[windows.panes]]
 title = "mini-2"
-split = "h"
-percent = 60
+split = "v"
 command = "ssh mini-2"
 
 [[windows.panes]]
 title = "trailer"
-split = "v"
+split = "h"
 command = "ssh trailer"
 
 [[windows.panes]]
 title = "big-boy"
-split = "h"
+split = "v"
 command = "ssh big-boy"
 
 [[windows.panes]]
