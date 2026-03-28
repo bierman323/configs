@@ -132,9 +132,13 @@ if (( $+commands[ncdu] )); then
   alias du='ncdu --color dark'
 fi
 
-# Configure zoxide
+# Configure zoxide (skip cd override inside Claude Code - causes sandbox errors)
 if (( $+commands[zoxide] )); then
-  eval "$(zoxide init --cmd cd zsh)"
+  if [[ -n "$CLAUDECODE" ]]; then
+    eval "$(zoxide init zsh)"
+  else
+    eval "$(zoxide init --cmd cd zsh)"
+  fi
 fi
 
 # Configure thefuck
