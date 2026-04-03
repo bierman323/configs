@@ -64,8 +64,8 @@ fi
 
 # Check if brew is installed. This needs to be above places where
 # you are checking for applications that are installed with brew
-if [[ -d "/opt/homebrew/bin/brew" ]]; then
-  path+=('/opt/homebrew/bin/brew')
+if [[ -f "/opt/homebrew/bin/brew" ]]; then
+  path+=('/opt/homebrew/bin')
   export path
 elif [[ -d "/home/linuxbrew/.linuxbrew/Homebrew/bin" ]]; then
   path+=('/home/linuxbrew/.linuxbrew/Homebrew/bin')
@@ -143,7 +143,7 @@ fi
 
 # Configure thefuck
 if (( $+commands[thefuck] )); then
-  eval $(thefuck --alias)
+  eval "$(thefuck --alias)"
 fi
 
 # Configure yazi file manager
@@ -187,7 +187,7 @@ path+=('/opt/local/bin' '/opt/local/sbin/' "$HOME/.local/bin/")
 
 # Work Mac specific configuration
 if [[ "$IS_WORK_MAC" == "true" ]]; then
-  path+=('/Users/brad.bierman/Library/Python/3.12/bin')
+  path+=("$HOME/Library/Python/3.12/bin")
 
   # Work-specific functions
   function smack_tunnelblick() {
@@ -212,6 +212,3 @@ if [[ "$IS_WORK_MAC" == "true" ]]; then
 fi
 
 export PATH
-
-# GTD scripts
-export PATH="/Users/bbierman/organize/gtd-scripts:$PATH"
