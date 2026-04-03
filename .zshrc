@@ -164,6 +164,11 @@ if [[ "$OS_VERSION" == "Darwin" ]]; then
   path+=('/Applications/Visual Studio Code.app/Contents/Resources/app/bin/')
 fi
 
+# Configure gtd-add-task
+if (( $+commands[gtd-add-task.sh] )); then
+  alias gtda='gtd-add-task.sh'
+fi
+
 # Some basic aliases
 alias cpr='cp -R'
 
