@@ -212,3 +212,6 @@ if [[ "$IS_WORK_MAC" == "true" ]]; then
 fi
 
 export PATH
+
+# GTD scripts
+export PATH="/Users/bbierman/organize/gtd-scripts:$PATH"
