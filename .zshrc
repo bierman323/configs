@@ -65,11 +65,9 @@ fi
 # Check if brew is installed. This needs to be above places where
 # you are checking for applications that are installed with brew
 if [[ -f "/opt/homebrew/bin/brew" ]]; then
-  path+=('/opt/homebrew/bin')
-  export path
-elif [[ -d "/home/linuxbrew/.linuxbrew/Homebrew/bin" ]]; then
-  path+=('/home/linuxbrew/.linuxbrew/Homebrew/bin')
-  export path
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [[ -x "/home/linuxbrew/.linuxbrew/Homebrew/bin/brew" ]]; then
+  eval "$(/home/linuxbrew/.linuxbrew/Homebrew/bin/brew shellenv)"
 fi
 
 # Check if there is a bin directory in the home directory
