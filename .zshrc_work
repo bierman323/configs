@@ -20,3 +20,7 @@
 # Skip loading certain plugins that might be restricted
 
 alias python3=python3.14
+
+# Dev Container CLI aliases (defaults to threat-lab config)
+alias dcup='devcontainer up --workspace-folder . --config .devcontainer/threat-lab/devcontainer.json'
+alias dcexec='devcontainer exec --workspace-folder . --config .devcontainer/threat-lab/devcontainer.json'
