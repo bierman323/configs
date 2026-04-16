@@ -6,5 +6,6 @@
 .bash_sensitive
 .env_local
 *_sensitive
+**/*_sensitive*
 *.local
 .secrets

@@ -31,7 +31,7 @@ directory: "~/projects"      # default working directory for all panes
 
 # Shell commands to run before session creation (e.g. VPN auth)
 pre_commands:
-  - "sft resolve REDACTED-BASTION-HOST"
+  - "sft resolve <bastion-host>"
 
 # iTerm2 tab title and color (macOS terminal)
 tab:
@@ -125,7 +125,7 @@ Layouts like `bastion` and `integrations` use `pre_commands` to handle authentic
 
 ```yaml
 pre_commands:
-  - "sft resolve REDACTED-BASTION-HOST"
+  - "sft resolve <bastion-host>"
 ```
 
 These run as shell commands before the tmux session is created.
