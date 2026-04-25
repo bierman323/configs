@@ -66,8 +66,8 @@ fi
 # you are checking for applications that are installed with brew
 if [[ -f "/opt/homebrew/bin/brew" ]]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
-elif [[ -x "/home/linuxbrew/.linuxbrew/Homebrew/bin/brew" ]]; then
-  eval "$(/home/linuxbrew/.linuxbrew/Homebrew/bin/brew shellenv)"
+elif [[ -x "/home/linuxbrew/.linuxbrew/bin/brew" ]]; then
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
 # Check if there is a bin directory in the home directory
