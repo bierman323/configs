@@ -1,0 +1,26 @@
+tmux-launch keybindings
+═══════════════════════════════════
+
+PANE MANAGEMENT
+  prefix+n      Add new pane — pick dir from zoxide,
+                then choose: Claude / Shell / Custom
+  prefix+Enter  Promote focused pane to left 60% main column
+  prefix+z      Full-screen zoom current pane (toggle)
+
+MONITORING
+  prefix+m      Toggle monitor/focus mode
+  prefix+i      Jump to next pane waiting for input
+  prefix+H      This help screen
+
+NAVIGATION
+  prefix+h/j/k/l    Move between panes (vim)
+  prefix+C-h/l      Previous/next window
+
+MODES
+  Monitor: orange borders, status badges, ⚡ count
+  Focus:   clean view, prefix+i still works silently
+
+TIPS
+  In monitor mode: panes waiting show ⚡ in their title
+  prefix+z then prefix+z: full-screen and back
+  Max panes: 9 Claude + 1 shell
